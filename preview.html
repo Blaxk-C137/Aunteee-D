@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wedding site — local viewer</title>
+<!--
+  Local viewer only. Not part of the deliverable — the four .jsx files are
+  self-contained drop-in components and need nothing from this page.
+
+  Open it with any static server from this folder, e.g.
+    python3 -m http.server 8765
+  then visit http://localhost:8765/preview.html
+
+  (It needs to be served over http, not opened as a file:// path, because
+  it fetches and compiles the .jsx in the browser.)
+-->
+<style>
+  html,body{margin:0}
+  body{background:#1b1b1b}
+  #bar{
+    position:sticky;top:0;z-index:99;display:flex;flex-wrap:wrap;gap:6px;
+    align-items:center;padding:9px 12px;background:#111;border-bottom:1px solid #2c2c2c;
+    font:12px/1 ui-sans-serif,system-ui,sans-serif
+  }
+  #bar b{color:#8a8a8a;font-weight:500;margin-right:6px;letter-spacing:.06em}
+  #bar a{
+    padding:6px 11px;border-radius:99px;text-decoration:none;
+    color:#d8d8d8;background:#232323;border:1px solid #333
+  }
+  #bar a:hover{background:#2e2e2e}
+  #bar a[aria-current="true"]{background:#e8e2d6;border-color:#e8e2d6;color:#1b1b1b}
+  #err{
+    display:none;position:fixed;inset:auto 0 0 0;z-index:98;max-height:45vh;overflow:auto;
+    background:#2a1219;color:#ffb4b4;font:12px/1.5 ui-monospace,monospace;
+    padding:14px;white-space:pre-wrap;margin:0
+  }
+</style>
+</head>
+<body>
+<div id="bar">
+  <b>VIEW</b>
+  <a data-f="wedding-site-white.jsx">White wedding</a>
+  <a data-f="wedding-site-asooke.jsx">Traditional (aso-oke)</a>
+  <a data-f="wedding-site.jsx">Original A</a>
+  <a data-f="wedding-site-celestial.jsx">Original B</a>
+</div>
+<div id="root"></div>
+<pre id="err"></pre>
+
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+<script>
+const show = (m) => {
+  const e = document.getElementById('err');
+  e.style.display = 'block';
+  e.textContent += m + '\n';
+};
+window.onerror = (m, s, l, c, err) => show((err && err.stack) || m);
+
+const file = new URLSearchParams(location.search).get('f') || 'wedding-site-white.jsx';
+
+for (const a of document.querySelectorAll('#bar a')) {
+  a.href = '?f=' + a.dataset.f;
+  if (a.dataset.f === file) a.setAttribute('aria-current', 'true');
+}
+
+fetch(file)
+  .then((r) => {
+    if (!r.ok) throw new Error('could not fetch ' + file + ' (' + r.status + ')');
+    return r.text();
+  })
+  .then((src) => {
+    const out = Babel.transform(src, {
+      filename: file,
+      presets: [['react', {}], ['env', { modules: 'commonjs', targets: { chrome: '100' } }]],
+    }).code;
+
+    // The components only ever require('react'); everything else is a no-op.
+    const req = (id) => (id === 'react' ? React : undefined);
+    const mod = { exports: {} };
+    new Function('require', 'module', 'exports', out)(req, mod, mod.exports);
+
+    const Comp = mod.exports.default;
+    if (!Comp) throw new Error('no default export found in ' + file);
+
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      React.createElement(Comp)
+    );
+    const link = document.querySelector('#bar a[aria-current="true"]');
+    document.title = (link ? link.textContent : file) + ' — preview';
+  })
+  .catch((e) => show(e.stack || String(e)));
+</script>
+</body>
+</html>
