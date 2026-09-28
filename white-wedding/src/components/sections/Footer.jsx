@@ -15,14 +15,14 @@ export function Footer() {
       <Foil art={LeafFrond} tier="wm" size={280} x="80%" y="52%" rotate={8} flip drift={-40} />
 
       <div className="ww-inner">
-        <Monogram size={124} initials={CONFIG.initials} onWine />
+        <Monogram size={124} initials={CONFIG.initials} onPurple />
 
         <p
           className="ww-display"
           style={{
             marginTop: "2rem",
             fontSize: "clamp(1.875rem,7vw,2.5rem)",
-            color: "var(--ivory)",
+            color: "var(--beige)",
           }}
         >
           Thank you
@@ -34,13 +34,13 @@ export function Footer() {
             margin: "1.2rem auto 0",
             maxWidth: "22rem",
             fontSize: "1.0625rem",
-            color: "var(--on-wine-dim)",
+            color: "var(--on-purple-dim)",
           }}
         >
           for agreeing to be part of this one.
         </p>
 
-        <EngravedRule tone="wine" width="min(12rem,50%)" style={{ margin: "2.8rem auto 1.7rem" }} />
+        <EngravedRule tone="purple" width="min(12rem,50%)" style={{ margin: "2.8rem auto 1.7rem" }} />
 
         <p
           style={{
@@ -48,7 +48,7 @@ export function Footer() {
             fontWeight: 500,
             letterSpacing: ".26em",
             textTransform: "uppercase",
-            color: "var(--on-wine-faint)",
+            color: "var(--on-purple-faint)",
           }}
         >
           {CONFIG.bride} &amp; {CONFIG.groom} · {year}

@@ -1,0 +1,106 @@
+- generic [ref=f69e2]:
+  - generic [ref=f69e3]:
+    - generic [ref=f69e6]:
+      - img "Jemimah and Titus" [ref=f69e7]:
+        - generic [ref=f69e8]:
+          - generic [ref=f69e9]: J
+          - generic [ref=f69e10]: T
+      - paragraph [ref=f69e11]: Together with their families
+      - heading "Jemimah" [level=1] [ref=f69e12]
+      - generic [ref=f69e15]: and
+      - heading "Titus" [level=1] [ref=f69e17]
+      - paragraph [ref=f69e23]: SATURDAY, 12 DECEMBER 2026
+      - paragraph [ref=f69e24]: Kano, Nigeria
+      - link "Open the invitation" [ref=f69e26] [cursor=pointer]:
+        - /url: "#story"
+    - generic [ref=f69e29]:
+      - paragraph [ref=f69e30]: Our story
+      - figure [ref=f69e36]:
+        - img "Jemimah and Titus" [ref=f69e37]
+      - paragraph [ref=f69e38]: Ten years ago we were two people arguing about a borrowed umbrella. Somewhere between then and now it became a life — a shared kitchen, a hundred inside jokes, and a habit of choosing each other on the ordinary days. We would like you there on the day it becomes official.
+    - generic [ref=f69e40]:
+      - generic [ref=f69e41]:
+        - paragraph [ref=f69e42]: The day
+        - paragraph [ref=f69e48]: Saturday 12 December
+      - generic [ref=f69e49]:
+        - article [ref=f69e50]:
+          - heading "The Ceremony" [level=3] [ref=f69e51]
+          - paragraph [ref=f69e52]: 11:00
+          - paragraph [ref=f69e58]: St. Mary's Catholic ChurchKano, Nigeria
+          - link "Open in maps" [ref=f69e59] [cursor=pointer]:
+            - /url: https://maps.google.com/?q=St.%20Mary's%20Catholic%20Church%2C%20Kano%2C%20Nigeria
+        - article [ref=f69e60]:
+          - heading "The Reception" [level=3] [ref=f69e61]
+          - paragraph [ref=f69e62]: 16:30
+          - paragraph [ref=f69e68]: Royal Gardens HallKano, Nigeria
+          - link "Open in maps" [ref=f69e69] [cursor=pointer]:
+            - /url: https://maps.google.com/?q=Royal%20Gardens%20Hall%2C%20Kano%2C%20Nigeria
+      - paragraph [ref=f69e70]: Black tie optional
+    - generic [ref=f69e73]:
+      - paragraph [ref=f69e74]: Until we say I do
+      - generic [ref=f69e80]:
+        - generic [ref=f69e81]:
+          - paragraph [ref=f69e82]:
+            - generic [aria-hidden] [ref=f69e83]: "75"
+            - generic [ref=f69e84]: 75 Days
+          - generic [ref=f69e85]: Days
+        - generic [ref=f69e86]:
+          - paragraph [ref=f69e87]:
+            - generic [aria-hidden] [ref=f69e88]: "01"
+            - generic [ref=f69e89]: 1 Hours
+          - generic [ref=f69e90]: Hours
+        - generic [ref=f69e91]:
+          - paragraph [ref=f69e92]:
+            - generic [aria-hidden] [ref=f69e93]: "14"
+            - generic [ref=f69e94]: 14 Minutes
+          - generic [ref=f69e95]: Minutes
+        - generic [ref=f69e96]:
+          - paragraph [ref=f69e97]:
+            - generic [aria-hidden] [ref=f69e98]: "08"
+            - generic [ref=f69e99]: 8 Seconds
+          - generic [ref=f69e100]: Seconds
+      - paragraph [ref=f69e101]: Kindly reply by Saturday 28 November
+    - generic [ref=f69e104]:
+      - paragraph [ref=f69e105]: Our song
+      - paragraph [ref=f69e111]: Now and Always
+      - paragraph [ref=f69e112]: Kotrell
+    - generic [ref=f69e115]:
+      - paragraph [ref=f69e117]: Kindly RSVP
+      - generic [ref=f69e123]:
+        - generic [ref=f69e124]:
+          - generic [ref=f69e125]: Number of guests
+          - combobox "Number of guests" [ref=f69e126]:
+            - option "1 guest" [selected]
+            - option "2 guests"
+            - option "3 guests"
+            - option "4 guests"
+            - option "5 guests"
+            - option "6 guests"
+        - generic [ref=f69e127]:
+          - generic [ref=f69e128]: Full name
+          - textbox "Full name" [ref=f69e129]:
+            - /placeholder: Your name
+        - generic [ref=f69e130]:
+          - generic [ref=f69e131]: Phone number
+          - textbox "Phone number" [ref=f69e132]:
+            - /placeholder: So we can reach you
+        - group "Will you be joining us?" [ref=f69e133]:
+          - generic [ref=f69e135]:
+            - generic [ref=f69e136]:
+              - radio "Accepts with pleasure" [checked] [ref=f69e137]
+              - generic [ref=f69e138] [cursor=pointer]: Accepts with pleasure
+            - generic [ref=f69e140]:
+              - radio "Declines with regret" [ref=f69e141]
+              - generic [ref=f69e142] [cursor=pointer]: Declines with regret
+        - button "Send my reply" [ref=f69e144] [cursor=pointer]
+        - paragraph [ref=f69e145]: Your reply opens in WhatsApp, ready to send. Nothing is stored on this page.
+    - contentinfo [ref=f69e146]:
+      - generic [ref=f69e147]:
+        - img "Jemimah and Titus" [ref=f69e148]:
+          - generic [ref=f69e149]:
+            - generic [ref=f69e150]: J
+            - generic [ref=f69e151]: T
+        - paragraph [ref=f69e152]: Thank you
+        - paragraph [ref=f69e153]: for agreeing to be part of this one.
+        - paragraph [ref=f69e159]: Jemimah & Titus · 2026
+  - button "Play Now and Always" [ref=f69e160] [cursor=pointer]

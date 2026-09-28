@@ -17,7 +17,7 @@ export function BigDay() {
   return (
     <Section
       id="details"
-      tone="ivory"
+      tone="beige"
       foil={
         <>
           <Foil art={LaurelArc} tier="accent" size={300} x="-6%" y="62%" rotate={-4} drift={-40} />

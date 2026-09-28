@@ -1,0 +1,261 @@
+/* ── the envelope ────────────────────────────────────────────────────
+   The guest's first sight of the page, and the reason the music can
+   play at all: the click that opens this is the user gesture every
+   browser requires before it will allow audible playback.
+
+   Everything here is outside `.ww`, so it cannot use that stylesheet's
+   scoped tokens. It reads the same palette from the Tailwind theme,
+   which puts it on :root. */
+
+.env-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #261338;
+}
+
+/* The couple, under a purple wash.
+
+   The wash has one job — sit between the photograph and the envelope so
+   the white reads as the subject rather than as an object dropped on a
+   picture — and it was doing several times more than that. Pulled back
+   to where the couple is legible, because a photograph nobody can make
+   out is just a dark background with extra steps. */
+.env-photo {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  filter: saturate(0.95) contrast(1.04) brightness(0.94);
+  transform: scale(1.06);
+}
+
+.env-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      124% 92% at 50% 46%,
+      rgba(38, 19, 56, 0.16) 0%,
+      rgba(38, 19, 56, 0.4) 54%,
+      rgba(38, 19, 56, 0.68) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(38, 19, 56, 0.34) 0%,
+      rgba(38, 19, 56, 0.12) 46%,
+      rgba(38, 19, 56, 0.52) 100%
+    );
+}
+
+/* When there is no photograph this is what is left, and it has to look
+   deliberate rather than broken. */
+.env-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 30%, #4A2C68 0%, #3D2352 45%, #261338 100%);
+}
+
+.env-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2rem, 7vh, 3.4rem);
+  padding: 1.5rem;
+}
+
+/* The idle. Held on its own element so the button inside is free to
+   carry its own transform without the two fighting. */
+.env-jiggle {
+  animation: env-jiggle 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transform-origin: 50% 60%;
+}
+.env-stage[data-phase="opening"] .env-jiggle,
+.env-stage[data-phase="flash"] .env-jiggle {
+  animation: none;
+}
+
+@keyframes env-jiggle {
+  0%, 62%, 100% { transform: translateY(0) rotate(0deg); }
+  68% { transform: translateY(-7px) rotate(-1.5deg); }
+  74% { transform: translateY(1px) rotate(1.2deg); }
+  80% { transform: translateY(-4px) rotate(-0.8deg); }
+  86% { transform: translateY(0) rotate(0.4deg); }
+}
+
+.env {
+  position: relative;
+  display: block;
+  width: min(85vw, 27rem);
+  aspect-ratio: 3 / 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 1500px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.env:focus-visible {
+  outline: 2px solid var(--color-lilac-lt);
+  outline-offset: 10px;
+}
+
+/* The pocket, and the flap that closes it.
+
+   These two are the same white, which is what an envelope is, and that
+   is exactly why the first version read as a flat rectangle with a seal
+   on it: nothing said which part was laid over which. They are separated
+   by value instead — the pocket sits a good few steps deeper and warmer,
+   the flap stays near-white at its fold — so the flap's two diagonal
+   edges are drawn by the tone change rather than by a line.
+
+   The edge cannot be drawn with a shadow: a drop-shadow filter is
+   applied *before* clip-path, so on a clipped element the shadow is
+   clipped away with everything else, and moving the filter up to the
+   rotating parent would flatten its preserve-3d and collapse the two
+   faces of the flap into one. Tone is what is left, and tone is enough. */
+.env-body {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(168deg, #F6EEE1 0%, #EDE1CE 56%, #E4D5BC 100%);
+  box-shadow: 0 26px 60px -22px rgba(0, 0, 0, 0.55);
+}
+
+/* The two creases of the front pocket, drawn as hairlines rather than
+   filled triangles: at this size a fill reads as a fold in card, a line
+   reads as the fold in paper. Angles follow the 3:2 box — the diagonal
+   from a bottom corner to the centre is atan(2/3). */
+.env-crease {
+  position: absolute;
+  bottom: 0;
+  width: 60.1%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(42, 34, 51, 0.16), transparent);
+}
+.env-crease--l { left: 0; transform-origin: 0 100%; transform: rotate(-33.69deg); }
+.env-crease--r { right: 0; transform-origin: 100% 100%; transform: rotate(33.69deg); }
+
+/* The card, which rises out of the envelope.
+
+   Sits *below* the body in the stack, so the body hides it while the two
+   overlap and the part above the envelope's top edge shows as it climbs.
+   That is the whole trick — no clipping, no mask. */
+.env-card {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 3%;
+  height: 80%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF5EC 100%);
+  border: 1px solid rgba(155, 127, 196, 0.3);
+  box-shadow: 0 10px 26px -14px rgba(0, 0, 0, 0.4);
+  will-change: transform;
+}
+.env-card-rule {
+  width: min(52%, 9rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-lilac-deco), transparent);
+}
+.env-card-name {
+  font-family: "Cormorant Garamond", Didot, "Times New Roman", serif;
+  font-size: clamp(1.1rem, 3.6vw, 1.5rem);
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+}
+
+/* The flap. Two faces so the purple liner is what shows as it swings back,
+   which is the detail that makes it read as a real envelope rather than
+   as a panel rotating. No background on the rotating element itself, or
+   it would show through both faces. */
+.env-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52%;
+  z-index: 3;
+  transform-origin: 50% 0%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.env-flap-face,
+.env-flap-back {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  backface-visibility: hidden;
+}
+.env-flap-face {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FCF8F2 50%, #F6EEE1 100%);
+}
+.env-flap-back {
+  background: linear-gradient(180deg, #4A2C68 0%, var(--color-purple) 62%, #2A1440 100%);
+  transform: rotateY(180deg);
+}
+
+/* The wax seal, sitting on the flap's point. It breaks rather than
+   travels: a seal that flipped up with the flap would read as a sticker. */
+/* Purple wax, and the light lilac monogram on it.
+
+   The monogram has two colourways — --lilac on white, or --lilac-lt on
+   deep purple — and only the second survives a ground this dark:
+   --lilac on --purple is 2.06:1, which is not a monogram, it is a
+   smudge. --lilac-lt reads 8.5:1 on the flat purple and still 5.5:1
+   over the lighter stop at the top of the seal's gradient. */
+.env-seal {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  z-index: 4;
+  width: clamp(3.4rem, 13vw, 4.6rem);
+  aspect-ratio: 1;
+  margin: -0.5em 0 0 -0.5em;
+  translate: -50% -50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, #5C3D7A 0%, var(--color-purple) 42%, var(--color-purple-deep) 100%);
+  box-shadow:
+    0 6px 18px -6px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(216, 199, 236, 0.24) inset;
+}
+
+.env-hint {
+  margin: 0;
+  font-family: "Jost", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(250, 247, 255, 0.82);
+  text-shadow: 0 1px 10px rgba(38, 19, 56, 0.7);
+  animation: env-breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes env-breathe {
+  0%, 100% { opacity: 0.72; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .env-jiggle,
+  .env-hint { animation: none; }
+  .env-hint { opacity: 0.9; }
+}

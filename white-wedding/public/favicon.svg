@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Jemimah and Titus">
+  <!-- Purple ground, light-lilac monogram — the same pairing as the wax
+       seal, and the only one that reads at 16px. A webfont cannot be
+       relied on inside a favicon, so this sets its own serif rather than
+       asking for Cormorant or Great Vibes. -->
+  <rect width="64" height="64" rx="10" fill="#3D2352"/>
+  <text x="32" y="33"
+        text-anchor="middle" dominant-baseline="central"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="34" font-style="italic" fill="#D8C7EC">J&amp;T</text>
+</svg>

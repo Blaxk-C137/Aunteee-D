@@ -1,23 +1,23 @@
 /* ── panels ──────────────────────────────────────────────────────── */
 .ww-panel{position:relative;padding:var(--panel-y) var(--panel-x);overflow:clip}
-.ww-panel--ivory{background:var(--ivory);color:var(--ink)}
-.ww-panel--pearl{background:var(--pearl);color:var(--ink)}
-.ww-panel--wine{background:var(--wine);color:var(--on-wine)}
-.ww-panel--deep{background:var(--wine-deep);color:var(--on-wine)}
+.ww-panel--beige{background:var(--beige);color:var(--ink)}
+.ww-panel--beige-deep{background:var(--beige-deep);color:var(--ink)}
+.ww-panel--purple{background:var(--purple);color:var(--on-purple)}
+.ww-panel--deep{background:var(--purple-deep);color:var(--on-purple)}
 .ww-inner{position:relative;z-index:1;max-width:60rem;margin:0 auto}
 .ww-measure{max-width:var(--measure)}
 
 /* ── focus ───────────────────────────────────────────────────────── */
-.ww :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:1px}
-.ww-panel--wine :focus-visible,.ww-panel--deep :focus-visible{outline-color:var(--gold-lt)}
+.ww :focus-visible{outline:2px solid var(--lilac);outline-offset:3px;border-radius:1px}
+.ww-panel--purple :focus-visible,.ww-panel--deep :focus-visible{outline-color:var(--lilac-lt)}
 
 /* ── the engraved rule — the page's only ornament ────────────────── */
-.ww-engraved{display:flex;align-items:center;gap:.75rem;color:var(--gold-deco)}
+.ww-engraved{display:flex;align-items:center;gap:.75rem;color:var(--lilac-deco)}
 .ww-engraved i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rule))}
 .ww-engraved i:last-child{background:linear-gradient(90deg,var(--rule),transparent)}
-.ww-engraved--onwine{color:var(--gold-lt)}
-.ww-engraved--onwine i{background:linear-gradient(90deg,transparent,rgba(223,193,121,.4))}
-.ww-engraved--onwine i:last-child{background:linear-gradient(90deg,rgba(223,193,121,.4),transparent)}
+.ww-engraved--onpurple{color:var(--lilac-lt)}
+.ww-engraved--onpurple i{background:linear-gradient(90deg,transparent,rgba(216,199,236,.4))}
+.ww-engraved--onpurple i:last-child{background:linear-gradient(90deg,rgba(216,199,236,.4),transparent)}
 
 /* ── the invitation plate's double rule ──────────────────────────── */
 /* On a phone the viewport *is* the plate, so the rule hugs the screen.
@@ -36,19 +36,19 @@
 }
 
 /* ── buttons ─────────────────────────────────────────────────────── */
-/* Border is the affordance, so it is solid --gold-deco (3:1 on ivory)
-   rather than a pale tint. Hover fills with the text gold, which keeps
-   the label at 5.3:1 instead of the 3:1 a pale fill would give. */
+/* Border is the affordance, so it is solid --lilac-deco (3:1 on beige)
+   rather than a pale tint. Hover fills with the text lilac, which keeps
+   the label at 5.8:1 instead of the 3:1 a pale fill would give. */
 .ww-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.6em;
   padding:1.05rem 2.4rem;border-radius:2px;
   font-size:.75rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
-  cursor:pointer;background:transparent;border:1px solid var(--gold-deco);color:var(--ink);
+  cursor:pointer;background:transparent;border:1px solid var(--lilac-deco);color:var(--ink);
   transition:background-color .2s ease,color .2s ease,border-color .2s ease
 }
-.ww-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--ivory)}
-.ww-btn--solid{background:var(--gold);border-color:var(--gold);color:var(--ivory)}
-.ww-btn--solid:hover{background:var(--wine);border-color:var(--wine)}
+.ww-btn:hover{background:var(--lilac);border-color:var(--lilac);color:var(--beige)}
+.ww-btn--solid{background:var(--lilac);border-color:var(--lilac);color:var(--beige)}
+.ww-btn--solid:hover{background:var(--purple);border-color:var(--purple)}
 .ww-btn[disabled]{opacity:.5;cursor:not-allowed}
 
 /* ── fields ──────────────────────────────────────────────────────── */
@@ -59,12 +59,12 @@
   font-family:'Jost',sans-serif;font-size:1rem;font-weight:300;color:var(--ink);
   transition:border-color .2s ease,box-shadow .2s ease
 }
-.ww-field::placeholder{color:rgba(43,33,36,.42)}
-.ww-field:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(138,96,19,.18)}
-.ww-field[aria-invalid="true"]{border-color:#96324B;box-shadow:0 0 0 3px rgba(150,50,75,.14)}
+.ww-field::placeholder{color:rgba(42,34,51,.42)}
+.ww-field:focus{outline:none;border-color:var(--lilac);box-shadow:0 0 0 3px rgba(107,78,158,.18)}
+.ww-field[aria-invalid="true"]{border-color:#8C3A5C;box-shadow:0 0 0 3px rgba(140,58,92,.14)}
 select.ww-field{
   appearance:none;padding-right:2.5rem;
-  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%238A6013' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%236B4E9E' stroke-width='1.4'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 1rem center
 }
 .ww-fielabel{
@@ -72,7 +72,7 @@ select.ww-field{
   font-size:.6875rem;font-weight:500;letter-spacing:.2em;
   text-transform:uppercase;color:var(--ink-soft)
 }
-.ww-error{display:block;margin-top:.45rem;font-size:.8125rem;color:#96324B}
+.ww-error{display:block;margin-top:.45rem;font-size:.8125rem;color:#8C3A5C}
 
 /* accept / decline — real radios so arrow keys work */
 .ww-choice{position:absolute;opacity:0;width:1px;height:1px;margin:0}
@@ -84,16 +84,57 @@ select.ww-field{
   color:var(--ink-soft);
   transition:border-color .2s ease,background-color .2s ease,color .2s ease
 }
-.ww-choice-label:hover{border-color:var(--gold-deco)}
-.ww-choice:checked+.ww-choice-label{border-color:var(--gold);background:rgba(138,96,19,.09);color:var(--ink)}
-.ww-choice:focus-visible+.ww-choice-label{outline:2px solid var(--gold);outline-offset:2px}
+.ww-choice-label:hover{border-color:var(--lilac-deco)}
+.ww-choice:checked+.ww-choice-label{border-color:var(--lilac);background:rgba(107,78,158,.09);color:var(--ink)}
+.ww-choice:focus-visible+.ww-choice-label{outline:2px solid var(--lilac);outline-offset:2px}
 .ww-tick{
   flex:none;width:15px;height:15px;border:1px solid var(--field-border);border-radius:50%;
   display:flex;align-items:center;justify-content:center
 }
-.ww-choice:checked+.ww-choice-label .ww-tick{border-color:var(--gold)}
+.ww-choice:checked+.ww-choice-label .ww-tick{border-color:var(--lilac)}
 .ww-choice:checked+.ww-choice-label .ww-tick::after{
-  content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)
+  content:"";width:7px;height:7px;border-radius:50%;background:var(--lilac)
+}
+
+/* ── photographs ─────────────────────────────────────────────────── */
+
+/* A photograph used as a ground rather than as a picture.
+   The couple asked for their own faces behind the invitation, and this
+   is how that survives contact with the type: the image is laid down
+   full-bleed, then washed with the panel's own colour until it is
+   texture. What is left is warm and specific — you can tell there is a
+   photograph there — without ever competing with a word of the text.
+   The wash is heavy on purpose. Anything lighter and the names stop
+   being the first thing read, which is the one thing the hero cannot
+   afford. */
+.ww-photo-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.ww-photo-bg img{display:block;width:100%;height:100%;object-fit:cover}
+.ww-photo-bg::after{content:"";position:absolute;inset:0;background:var(--wash)}
+
+/* The hero's wash is a radial, not a flat film: densest through the
+   middle where the names are, thinning towards the corners so the
+   photograph is still visible at the edges of the plate. */
+.ww-photo-bg--hero{--wash:radial-gradient(
+  ellipse 118% 82% at 50% 48%,
+  rgba(255,255,255,.93) 0%,
+  rgba(250,246,238,.88) 38%,
+  rgba(243,235,222,.8) 70%,
+  rgba(233,220,201,.74) 100%)}
+
+/* A photograph as itself: framed, with the same hairline-inside-a-hairline
+   the event cards use, so it belongs to the page rather than sitting on
+   it. Held at the 3:2 the camera took it at — the couple is a horizontal
+   pair, and a portrait crop cuts one of them out. */
+.ww-portrait{
+  position:relative;width:min(100%,34rem);margin:0 auto clamp(30px,7vw,44px);
+  padding:clamp(7px,1.5vw,11px);background:var(--beige);
+  border:1px solid var(--rule-soft);
+  box-shadow:0 20px 48px -28px rgba(42,34,51,.45)
+}
+.ww-portrait img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.ww-portrait::after{
+  content:"";position:absolute;inset:clamp(11px,2.4vw,17px);
+  border:1px solid rgba(155,127,196,.22);pointer-events:none
 }
 
 /* ── the big day cards ───────────────────────────────────────────── */
@@ -105,23 +146,31 @@ select.ww-field{
   .ww-cards[data-count="2"],.ww-cards[data-count="3"]{grid-template-columns:repeat(2,1fr)}
 }
 .ww-card{
-  position:relative;border:1px solid var(--rule-soft);background:var(--ivory);
+  position:relative;border:1px solid var(--rule-soft);background:var(--beige);
   padding:clamp(30px,7vw,46px) clamp(22px,5vw,36px);text-align:center
 }
 .ww-card::before{
-  content:"";position:absolute;inset:6px;border:1px solid rgba(176,138,51,.13);pointer-events:none
+  content:"";position:absolute;inset:6px;border:1px solid rgba(155,127,196,.13);pointer-events:none
 }
 .ww-card h3{
   font-size:.6875rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:1.4rem
+  color:var(--lilac);margin-bottom:1.4rem
 }
+/* The rule under this link used to be a border-bottom, which made the
+   whole tap target the height of the text — 23px, about half of what a
+   thumb needs. A border cannot be pushed away from the box it sits on,
+   so the underline is drawn with text-decoration instead: the box grows
+   to 44px and the line stays where it was, just under the words. */
 .ww-map{
-  display:inline-block;margin-top:1.3rem;padding-bottom:.2rem;
-  border-bottom:1px solid var(--rule);
+  display:inline-flex;align-items:center;min-height:44px;
+  margin-top:.9rem;padding:0 .5rem;
   font-size:.6875rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--gold);text-decoration:none;transition:border-color .2s ease
+  color:var(--lilac);text-decoration:underline;
+  text-decoration-color:var(--rule);text-decoration-thickness:1px;
+  text-underline-offset:5px;
+  transition:text-decoration-color .2s ease
 }
-.ww-map:hover{border-color:var(--gold)}
+.ww-map:hover{text-decoration-color:var(--lilac)}
 
 /* ── countdown ───────────────────────────────────────────────────── */
 .ww-units{
@@ -130,20 +179,20 @@ select.ww-field{
   margin:clamp(32px,7vw,50px) auto 0;max-width:38rem
 }
 @media (min-width:30rem){.ww-units{grid-template-columns:repeat(4,1fr)}}
-.ww-unit{text-align:center;border-left:1px solid rgba(223,193,121,.18)}
+.ww-unit{text-align:center;border-left:1px solid rgba(216,199,236,.18)}
 .ww-unit:first-child,.ww-unit:nth-child(3){border-left:0}
 @media (min-width:30rem){
-  .ww-unit:nth-child(3){border-left:1px solid rgba(223,193,121,.18)}
+  .ww-unit:nth-child(3){border-left:1px solid rgba(216,199,236,.18)}
   .ww-unit:first-child{border-left:0}
 }
 .ww-unit .ww-num{
-  font-size:clamp(38px,11vw,64px);color:var(--ivory);
+  font-size:clamp(38px,11vw,64px);color:var(--beige);
   font-variation-settings:'opsz' 96
 }
 .ww-unit span.ww-cap{
   display:block;margin-top:.85rem;
   font-size:.625rem;font-weight:500;letter-spacing:.3em;
-  text-transform:uppercase;color:var(--gold-lt);opacity:.8
+  text-transform:uppercase;color:var(--lilac-lt);opacity:.8
 }
 
 /* ── song ────────────────────────────────────────────────────────── */
@@ -151,14 +200,14 @@ select.ww-field{
 .ww-play{
   flex:none;width:56px;height:56px;border-radius:50%;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  border:1px solid var(--gold);color:var(--ivory);background:var(--gold);
+  border:1px solid var(--lilac);color:var(--beige);background:var(--lilac);
   transition:background-color .2s ease,transform .2s ease
 }
-.ww-play:hover{background:var(--wine);border-color:var(--wine);transform:scale(1.03)}
+.ww-play:hover{background:var(--purple);border-color:var(--purple);transform:scale(1.03)}
 .ww-play svg{display:block}
 .ww-track{flex:1;min-width:0}
-.ww-scrub{height:2px;background:rgba(43,33,36,.16);cursor:pointer;overflow:hidden}
-.ww-scrub span{display:block;height:100%;background:var(--gold);width:0}
+.ww-scrub{height:2px;background:rgba(42,34,51,.16);cursor:pointer;overflow:hidden}
+.ww-scrub span{display:block;height:100%;background:var(--lilac);width:0}
 .ww-times{
   display:flex;justify-content:space-between;margin-top:.5rem;
   font-size:.6875rem;letter-spacing:.1em;color:var(--ink-soft);
@@ -178,5 +227,5 @@ select.ww-field{
 
 .ww-thread{
   position:fixed;top:0;left:0;height:2px;z-index:60;
-  background:var(--gold);transition:width .12s linear;pointer-events:none
+  background:var(--lilac);transition:width .12s linear;pointer-events:none
 }

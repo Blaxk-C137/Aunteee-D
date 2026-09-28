@@ -1,41 +1,22 @@
-import { useRef, useState } from "react";
 import { CONFIG } from "../../config/site.js";
 import { Foil } from "../../foil/Foil.jsx";
 import { BlossomSpray, BudCluster, LeafFrond } from "../../foil/motifs.jsx";
 import { EngravedRule } from "../EngravedRule.jsx";
 import { Section } from "../Section.jsx";
 
+/* A dedication, not a player.
+
+   This section used to carry its own <audio> and transport, gated on a
+   `CONFIG.songUrl` that no longer exists. The track is supplied as a
+   file now and is played by the single element in `App.jsx` from the
+   moment the envelope opens, with the floating control as its only
+   transport. Giving this section its own element would put a second
+   copy of the same file on top of the first. */
 export function Song() {
-  const audioRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
-  const [elapsed, setElapsed] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const hasAudio = Boolean(CONFIG.songUrl);
-
-  const toggle = () => {
-    const el = audioRef.current;
-    if (!el) return;
-    if (el.paused) el.play().catch(() => {});
-    else el.pause();
-  };
-
-  const seek = (e) => {
-    const el = audioRef.current;
-    if (!el || !duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const ratio = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
-    el.currentTime = ratio * duration;
-  };
-
-  const mmss = (s) => {
-    if (!Number.isFinite(s)) return "0:00";
-    return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
-  };
-
   return (
     <Section
       id="song"
-      tone="ivory"
+      tone="beige"
       foil={
         <>
           <Foil art={BlossomSpray} tier="accent" size={250} x="76%" y="4%" rotate={-12} flip drift={44} />
@@ -66,50 +47,6 @@ export function Song() {
         >
           {CONFIG.songArtist}
         </p>
-
-        {hasAudio ? (
-          <>
-            <audio
-              ref={audioRef}
-              src={CONFIG.songUrl}
-              preload="metadata"
-              onPlay={() => setPlaying(true)}
-              onPause={() => setPlaying(false)}
-              onEnded={() => setPlaying(false)}
-              onTimeUpdate={(e) => setElapsed(e.currentTarget.currentTime)}
-              onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-            />
-            <div className="ww-player">
-              <button
-                type="button"
-                className="ww-play"
-                onClick={toggle}
-                aria-label={playing ? `Pause ${CONFIG.songTitle}` : `Play ${CONFIG.songTitle}`}
-              >
-                <svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true" focusable="false">
-                  {playing ? (
-                    <>
-                      <rect x="3.5" y="2.5" width="3.4" height="12" fill="currentColor" />
-                      <rect x="10.1" y="2.5" width="3.4" height="12" fill="currentColor" />
-                    </>
-                  ) : (
-                    <path d="M4.6 2.3l10 6.2-10 6.2z" fill="currentColor" />
-                  )}
-                </svg>
-              </button>
-
-              <div className="ww-track">
-                <div className="ww-scrub" role="presentation" onClick={seek}>
-                  <span style={{ width: duration ? `${(elapsed / duration) * 100}%` : "0%" }} />
-                </div>
-                <div className="ww-times">
-                  <span>{mmss(elapsed)}</span>
-                  <span>{mmss(duration)}</span>
-                </div>
-              </div>
-            </div>
-          </>
-        ) : null}
       </div>
     </Section>
   );

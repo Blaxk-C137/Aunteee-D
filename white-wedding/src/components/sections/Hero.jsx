@@ -1,4 +1,5 @@
 import { CONFIG } from "../../config/site.js";
+import { photos } from "../../config/photos.js";
 import { Foil } from "../../foil/Foil.jsx";
 import { BlossomSpray, LeafFrond, SingleBloom, WreathRing } from "../../foil/motifs.jsx";
 import { asDate, fmtDay, scrollToId } from "../../lib/format.js";
@@ -9,17 +10,25 @@ export function Hero() {
   const d = asDate(CONFIG.weddingDate);
   return (
     <section
-      className="ww-panel ww-panel--ivory"
+      className="ww-panel ww-panel--beige"
       style={{
         minHeight: "100svh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
+        /* The ground when there is no photograph. With one, `.ww-photo-bg`
+           covers this and supplies its own wash. */
         background:
-          "radial-gradient(ellipse 130% 90% at 50% 0%, #FFFFFF 0%, var(--ivory) 46%, var(--pearl) 100%)",
+          "radial-gradient(ellipse 130% 90% at 50% 0%, #FFFFFF 0%, var(--beige) 46%, var(--beige-deep) 100%)",
       }}
     >
+      {photos.hero ? (
+        <div className="ww-photo-bg ww-photo-bg--hero" aria-hidden="true">
+          <img src={photos.hero} alt="" decoding="async" />
+        </div>
+      ) : null}
+
       <div className="ww-frame" aria-hidden="true">
         <span />
         <span />
@@ -50,7 +59,7 @@ export function Hero() {
 
         <div className="ww-and" aria-hidden="true">
           <i />
-          <span className="ww-script" style={{ color: "var(--gold)" }}>
+          <span className="ww-script" style={{ color: "var(--lilac)" }}>
             and
           </span>
           <i />

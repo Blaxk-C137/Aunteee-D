@@ -1,0 +1,47 @@
+/* App-level chrome: the pieces that belong to the page rather than to a
+   section, and so are not part of the ported `.ww` stylesheet. */
+
+/* The white wash between the envelope and the site.
+
+   Sits above everything, including the envelope, and is driven by App's
+   phase — opaque at `flash`, transparent either side of it. It is the
+   hand-off: the envelope goes away underneath a full white screen, so
+   the site is never seen arriving. */
+.ww-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: #FFFFFF;
+  pointer-events: none;
+}
+
+/* ── section lock ────────────────────────────────────────────────────
+   On a phone the panels are each about a screen tall, and one flick can
+   carry a guest straight past three of them. Snapping gives every panel
+   a resting place instead.
+
+   `proximity`, never `mandatory` — and this is not a stylistic choice.
+   The Day panel measures 960px against a ~844px phone viewport, so it
+   is taller than the screen it is read on. Under `mandatory` the only
+   legal resting offsets are the section starts, so the scroller would
+   always drag back to the nearest one and the bottom of that panel —
+   the reception card and the dress code — could never be reached at
+   all. `proximity` settles the scroll when it comes to rest near a
+   boundary and otherwise keeps out of the way.
+
+   `scroll-snap-stop: always` is the lock itself: it stops a fling *at*
+   each of these sections rather than letting momentum carry through
+   them. It is deliberately not applied to every panel. Song is 271px
+   tall and the footer 406px, and turning those into speed bumps would
+   cost the reader more than the lock gives them. */
+@media (max-width: 46rem) {
+  html { scroll-snap-type: y proximity; }
+  .ww-panel { scroll-snap-align: start; }
+  #story, #details, #countdown, #rsvp { scroll-snap-stop: always; }
+}
+
+/* Snapping moves the page under the reader's hand, which is precisely
+   what this preference asks us not to do. */
+@media (max-width: 46rem) and (prefers-reduced-motion: reduce) {
+  html { scroll-snap-type: none; }
+}

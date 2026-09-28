@@ -1,6 +1,6 @@
-export const EngravedRule = ({ width = "min(19rem,74%)", tone = "ivory", style }) => (
+export const EngravedRule = ({ width = "min(19rem,74%)", tone = "beige", style }) => (
   <div
-    className={`ww-engraved${tone === "wine" ? " ww-engraved--onwine" : ""}`}
+    className={`ww-engraved${tone === "purple" ? " ww-engraved--onpurple" : ""}`}
     style={{ width, margin: "0 auto", ...style }}
     aria-hidden="true"
   >

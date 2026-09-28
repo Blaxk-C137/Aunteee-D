@@ -1,5 +1,5 @@
 /* ── the foil ────────────────────────────────────────────────────── */
-/*  Gold botanical line work laid on the ground. It is admitted on three
+/*  Lilac botanical line work laid on the ground. It is admitted on three
     conditions: it never sits where text sits, it never moves on its own,
     and it is drawn rather than placed.
 
@@ -16,7 +16,7 @@
     own business, drawn at random when it mounts — see REVEALS. */
 .ww-foil{
   position:absolute;inset:0;z-index:0;overflow:hidden;
-  pointer-events:none;color:var(--gold-deco);
+  pointer-events:none;color:var(--lilac-deco);
   --foil-o:.07;
   --rv-dur:1.5s;--rv-delay:0s;--rv-step:.1s;
   --rv-ease:cubic-bezier(.42,0,.2,1)
@@ -24,11 +24,12 @@
 .ww-foil--wm{--foil-o:.07}
 .ww-foil--accent{--foil-o:.3}
 .ww-foil--inline{--foil-o:.5}
-/* Translucent gold over wine turns olive and stops reading as metal, so
-   the wine panels take the light gold instead. */
-.ww-panel--wine .ww-foil,.ww-panel--deep .ww-foil{color:var(--gold-lt)}
-.ww-panel--wine .ww-foil--wm,.ww-panel--deep .ww-foil--wm{--foil-o:.075}
-.ww-panel--wine .ww-foil--accent,.ww-panel--deep .ww-foil--accent{--foil-o:.3}
+/* Translucent lilac over purple has too little separation from its
+   ground to read as ornament at all, so the purple panels take the
+   light lilac instead. */
+.ww-panel--purple .ww-foil,.ww-panel--deep .ww-foil{color:var(--lilac-lt)}
+.ww-panel--purple .ww-foil--wm,.ww-panel--deep .ww-foil--wm{--foil-o:.075}
+.ww-panel--purple .ww-foil--accent,.ww-panel--deep .ww-foil--accent{--foil-o:.3}
 
 /* The entrance sits on its own element so it can own opacity, transform
    and clip-path without fighting the two transforms that already exist:

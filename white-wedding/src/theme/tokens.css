@@ -18,31 +18,33 @@
      This used to be done only here, and only in x. That trimmed the sides
      but left the last panel's botanical hanging past the bottom of the
      page, where nothing clipped it: the document grew by the length of the
-     overhang and ended on a band of bare ground with a few gold strokes
+     overhang and ended on a band of bare ground with a few lilac strokes
      still drawn across it. */
   overflow-x:clip;
-  /* ── ivory ground, wine depth, gold metal ────────────────────── */
-  --ivory:#FCF9F3;
-  --pearl:#F4ECDF;
-  --wine:#4A1526;
-  --wine-deep:#2E0C18;
-  --ink:#2B2124;
-  --ink-soft:rgba(43,33,36,.68);
+  /* ── beige ground, purple depth, lilac accent ─────────────────── */
+  --beige:#F7F1E6;
+  --beige-deep:#EFE4D3;
+  --white:#FFFFFF;
+  --purple:#3D2352;
+  --purple-deep:#261338;
+  --ink:#2A2233;
+  --ink-soft:rgba(42,34,51,.68);
 
-  /* Two golds, because one cannot do both jobs. --gold is the text
-     gold: 5.3:1 on ivory and 4.8:1 on pearl, so small caps labels stay
-     legible. --gold-deco is the ornamental gold for hairlines, frames
-     and the monogram, where being delicate is the point. */
-  --gold:#8A6013;
-  --gold-deco:#B08A33;
-  --gold-lt:#DFC179;
+  /* Two lilacs, because one cannot do both jobs. --lilac is the text
+     lilac: 5.8:1 on beige and 5.2:1 on beige-deep, so small caps labels
+     stay legible. --lilac-deco is the ornamental lilac for hairlines,
+     frames and the monogram, where being delicate is the point — and it
+     is only 3:1, which is why it is never asked to carry words. */
+  --lilac:#6B4E9E;
+  --lilac-deco:#9B7FC4;
+  --lilac-lt:#D8C7EC;
 
-  --rule:rgba(176,138,51,.42);
-  --rule-soft:rgba(176,138,51,.2);
-  --field-border:rgba(43,33,36,.5);
-  --on-wine:rgba(252,249,243,.88);
-  --on-wine-dim:rgba(252,249,243,.55);
-  --on-wine-faint:rgba(252,249,243,.5);
+  --rule:rgba(155,127,196,.42);
+  --rule-soft:rgba(155,127,196,.2);
+  --field-border:rgba(42,34,51,.5);
+  --on-purple:rgba(250,247,255,.88);
+  --on-purple-dim:rgba(250,247,255,.55);
+  --on-purple-faint:rgba(250,247,255,.5);
 
   --measure:34rem;
   --panel-y:clamp(62px,13vw,116px);
@@ -53,7 +55,7 @@
   font-weight:300;
   line-height:1.7;
   color:var(--ink);
-  background:var(--ivory);
+  background:var(--beige);
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
@@ -107,16 +109,19 @@
 
 .ww-label{
   font-size:.6875rem;font-weight:400;letter-spacing:.32em;
-  text-transform:uppercase;color:var(--gold)
+  text-transform:uppercase;color:var(--lilac)
 }
 .ww-label--plain{color:var(--ink-soft)}
-.ww-label--onwine{color:var(--gold-lt)}
+.ww-label--onpurple{color:var(--lilac-lt)}
 
 /* Wide tracking is the point of the label, but on a narrow phone it
-   pushes the line into a ragged second row. Tighten it there instead
-   of letting the label wrap. */
+   pushes the line into a ragged second row. Tighten the tracking there
+   instead of letting the label wrap — and tighten *only* the tracking.
+   This used to drop the size to 10px as well, which is the one thing a
+   phone screen cannot afford: the tracking is what eats the width, so
+   cutting it buys the whole saving and the type stays legible. */
 @media (max-width:30rem){
-  .ww-label,.ww-fielabel,.ww-eyebrow{font-size:.625rem;letter-spacing:.2em}
+  .ww-label,.ww-fielabel,.ww-eyebrow{letter-spacing:.2em}
 }
 
 @media (prefers-reduced-motion:reduce){

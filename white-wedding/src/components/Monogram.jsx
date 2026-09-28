@@ -94,7 +94,7 @@ const MonoLetters = ({ holder, fit, letters, fill, bg }) => (
   </g>
 );
 
-export function Monogram({ size = "clamp(104px,30vw,136px)", initials, onWine, bg }) {
+export function Monogram({ size = "clamp(104px,30vw,136px)", initials, onPurple, bg }) {
   const letters = initialPair(initials);
   const [holder, fit] = useMonogramFit(letters);
   const width = typeof size === "number" ? `${size}px` : size;
@@ -119,8 +119,8 @@ export function Monogram({ size = "clamp(104px,30vw,136px)", initials, onWine, b
         holder={holder}
         fit={fit}
         letters={letters}
-        fill={onWine ? "#DFC179" : "#8A6013"}
-        bg={bg || (onWine ? "#2E0C18" : "#FBF7F0")}
+        fill={onPurple ? "#D8C7EC" : "#6B4E9E"}
+        bg={bg || (onPurple ? "#261338" : "#FFFFFF")}
       />
     </svg>
   );

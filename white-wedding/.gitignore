@@ -4,3 +4,9 @@ dist/
 test-results/
 playwright-report/
 .DS_Store
+
+# The full-size photographs as they arrived, kept so the optimised copies
+# in src/assets/photos/ can always be regenerated rather than re-exported.
+# Ignored because they are duplicates, not sources — un-ignore this line
+# if the originals should live in version control.
+src/assets/photos-original/

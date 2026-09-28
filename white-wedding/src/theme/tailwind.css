@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/* Tailwind is here for the new interactive chrome — the envelope, the
+   audio control, anything pulled from shadcn. The editorial sections keep
+   the hand-written stylesheet, which is where the art direction lives.
+
+   The palette below duplicates the values in `theme/tokens.css`, which is
+   the canonical copy scoped to `.ww`. They are repeated rather than
+   shared so that the verified stylesheet keeps working on its own terms:
+   nothing in it should break because Tailwind was reconfigured or
+   removed. If you change a colour, change it in both places. */
+@theme {
+  --color-beige: #F7F1E6;
+  --color-beige-deep: #EFE4D3;
+  --color-white: #FFFFFF;
+  --color-purple: #3D2352;
+  --color-purple-deep: #261338;
+  --color-ink: #2A2233;
+  --color-lilac: #6B4E9E;
+  --color-lilac-deco: #9B7FC4;
+  --color-lilac-lt: #D8C7EC;
+}
+
+/* ── shadcn ──────────────────────────────────────────────────────────
+   shadcn ships its own theme, and left alone it would import a grey and
+   blue palette into a page that is beige, purple and lilac. So its
+   variables are pointed at this design's colours instead: anything
+   dropped in from shadcn arrives already in the right palette, and no
+   component can quietly introduce a colour that is not in the wedding.
+
+   The values are written as raw colour channels because that is the
+   shape shadcn's own stylesheet expects. */
+:root {
+  --background: var(--color-beige);
+  --foreground: var(--color-ink);
+
+  --card: var(--color-beige);
+  --card-foreground: var(--color-ink);
+
+  --popover: var(--color-beige);
+  --popover-foreground: var(--color-ink);
+
+  --primary: var(--color-purple);
+  --primary-foreground: var(--color-beige);
+
+  --secondary: var(--color-beige-deep);
+  --secondary-foreground: var(--color-ink);
+
+  --muted: var(--color-beige-deep);
+  --muted-foreground: rgba(42, 34, 51, 0.68);
+
+  --accent: var(--color-lilac);
+  --accent-foreground: var(--color-beige);
+
+  --destructive: #8C3A5C;
+  --destructive-foreground: var(--color-beige);
+
+  --border: rgba(155, 127, 196, 0.42);
+  --input: rgba(42, 34, 51, 0.5);
+  --ring: var(--color-lilac);
+
+  /* The design is rectilinear — a letterpress invitation has square
+     corners and so does everything standing in for one. */
+  --radius: 0.125rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+}

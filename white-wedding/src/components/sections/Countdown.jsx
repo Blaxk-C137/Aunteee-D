@@ -25,11 +25,11 @@ export function Countdown() {
     return (
       <Section id="countdown" tone="deep" foil={foil}>
         <div style={{ textAlign: "center", maxWidth: "32rem", margin: "0 auto" }}>
-          <p className="ww-label ww-label--onwine">Today</p>
-          <EngravedRule tone="wine" width="min(13rem,55%)" style={{ margin: "1.5rem auto" }} />
+          <p className="ww-label ww-label--onpurple">Today</p>
+          <EngravedRule tone="purple" width="min(13rem,55%)" style={{ margin: "1.5rem auto" }} />
           <p
             className="ww-display"
-            style={{ fontSize: "clamp(2.125rem,8vw,3.25rem)", color: "var(--ivory)" }}
+            style={{ fontSize: "clamp(2.125rem,8vw,3.25rem)", color: "var(--beige)" }}
           >
             The day is here
           </p>
@@ -46,10 +46,10 @@ export function Countdown() {
   ];
 
   return (
-    <Section id="countdown" tone="wine" foil={foil}>
+    <Section id="countdown" tone="purple" foil={foil}>
       <div style={{ textAlign: "center" }}>
-        <p className="ww-label ww-label--onwine">Until we say I do</p>
-        <EngravedRule tone="wine" width="min(13rem,55%)" style={{ margin: "1.5rem auto 0" }} />
+        <p className="ww-label ww-label--onpurple">Until we say I do</p>
+        <EngravedRule tone="purple" width="min(13rem,55%)" style={{ margin: "1.5rem auto 0" }} />
 
         <div className="ww-units">
           {units.map(({ v, l }) => (
@@ -87,7 +87,7 @@ export function Countdown() {
               fontWeight: 500,
               letterSpacing: ".24em",
               textTransform: "uppercase",
-              color: "var(--on-wine-dim)",
+              color: "var(--on-purple-dim)",
             }}
           >
             Kindly reply by {fmtShortDate(by)}

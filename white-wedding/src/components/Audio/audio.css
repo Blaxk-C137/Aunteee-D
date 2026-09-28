@@ -1,0 +1,61 @@
+/* ── the music control ───────────────────────────────────────────────
+   Sits in the corner once the site is open. Outside `.ww`, so it reads
+   the palette from the Tailwind theme on :root. */
+
+.aud {
+  position: fixed;
+  right: clamp(0.9rem, 3vw, 1.6rem);
+  bottom: clamp(0.9rem, 3vw, 1.6rem);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--color-lilac-lt);
+  background: rgba(38, 19, 56, 0.82);
+  border: 1px solid rgba(216, 199, 236, 0.4);
+  box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.aud:hover {
+  background: var(--color-purple);
+  border-color: var(--color-lilac-lt);
+  transform: scale(1.05);
+}
+
+.aud:focus-visible {
+  outline: 2px solid var(--color-lilac-lt);
+  outline-offset: 3px;
+}
+
+.aud svg { display: block; }
+
+/* The wave arcs are always drawn; playing is what makes them move. A
+   control that changes shape reads as a different button, whereas one
+   that animates reads as the same button in a different state. */
+.aud-wave {
+  transform-origin: 7px 10px;
+  animation: aud-wave 1.5s ease-in-out infinite;
+}
+.aud-wave--far { animation-delay: 0.18s; }
+
+.aud[aria-pressed="false"] .aud-wave {
+  animation: none;
+  opacity: 0.28;
+}
+
+@keyframes aud-wave {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aud-wave { animation: none; opacity: 0.9; }
+  .aud[aria-pressed="false"] .aud-wave { opacity: 0.28; }
+}

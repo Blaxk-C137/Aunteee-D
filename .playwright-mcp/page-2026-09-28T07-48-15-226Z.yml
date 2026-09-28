@@ -1,0 +1,111 @@
+- generic [ref=f37e2]:
+  - generic [ref=f37e3]:
+    - generic [ref=f37e5]:
+      - img "Adaeze and Emeka" [ref=f37e6]:
+        - generic [ref=f37e7]:
+          - generic [ref=f37e8]: A
+          - generic [ref=f37e9]: E
+      - paragraph [ref=f37e10]: Together with their families
+      - heading "Adaeze" [level=1] [ref=f37e11]
+      - generic [ref=f37e14]: and
+      - heading "Emeka" [level=1] [ref=f37e16]
+      - paragraph [ref=f37e22]: SUNDAY, 18 JULY 2027
+      - paragraph [ref=f37e23]: Kano, Nigeria
+      - link "Open the invitation" [ref=f37e25] [cursor=pointer]:
+        - /url: "#story"
+    - generic [ref=f37e28]:
+      - paragraph [ref=f37e29]: Our story
+      - paragraph [ref=f37e35]: Ten years ago we were two people arguing about a borrowed umbrella. Somewhere between then and now it became a life — a shared kitchen, a hundred inside jokes, and a habit of choosing each other on the ordinary days. We would like you there on the day it becomes official.
+    - generic [ref=f37e37]:
+      - generic [ref=f37e38]:
+        - paragraph [ref=f37e39]: The day
+        - paragraph [ref=f37e45]: Sunday 18 July
+      - generic [ref=f37e46]:
+        - article [ref=f37e47]:
+          - heading "The Ceremony" [level=3] [ref=f37e48]
+          - paragraph [ref=f37e49]: 11:00
+          - paragraph [ref=f37e55]: St. Mary's Catholic ChurchKano, Nigeria
+          - link "Open in maps" [ref=f37e56] [cursor=pointer]:
+            - /url: https://maps.google.com/?q=St.%20Mary's%20Catholic%20Church%2C%20Kano%2C%20Nigeria
+        - article [ref=f37e57]:
+          - heading "The Reception" [level=3] [ref=f37e58]
+          - paragraph [ref=f37e59]: 16:30
+          - paragraph [ref=f37e65]: Royal Gardens HallKano, Nigeria
+          - link "Open in maps" [ref=f37e66] [cursor=pointer]:
+            - /url: https://maps.google.com/?q=Royal%20Gardens%20Hall%2C%20Kano%2C%20Nigeria
+      - paragraph [ref=f37e67]: Black tie optional
+    - generic [ref=f37e70]:
+      - paragraph [ref=f37e71]: Until we say I do
+      - generic [ref=f37e77]:
+        - generic [ref=f37e78]:
+          - paragraph [ref=f37e79]:
+            - generic [aria-hidden] [ref=f37e80]: "293"
+            - generic [ref=f37e81]: 293 Days
+          - generic [ref=f37e82]: Days
+        - generic [ref=f37e83]:
+          - paragraph [ref=f37e84]:
+            - generic [aria-hidden] [ref=f37e85]: "02"
+            - generic [ref=f37e86]: 2 Hours
+          - generic [ref=f37e87]: Hours
+        - generic [ref=f37e88]:
+          - paragraph [ref=f37e89]:
+            - generic [aria-hidden] [ref=f37e90]: "11"
+            - generic [ref=f37e91]: 11 Minutes
+          - generic [ref=f37e92]: Minutes
+        - generic [ref=f37e93]:
+          - paragraph [ref=f37e94]:
+            - generic [aria-hidden] [ref=f37e95]: "44"
+            - generic [ref=f37e96]: 44 Seconds
+          - generic [ref=f37e97]: Seconds
+      - paragraph [ref=f37e98]: Kindly reply by Wednesday 30 June
+    - generic [ref=f37e101]:
+      - paragraph [ref=f37e102]: Our song
+      - paragraph [ref=f37e108]: A Thousand Years
+      - paragraph [ref=f37e109]: Christina Perri
+    - generic [ref=f37e112]:
+      - paragraph [ref=f37e114]: Kindly RSVP
+      - generic [ref=f37e120]:
+        - generic [ref=f37e121]:
+          - generic [ref=f37e122]: Number of guests
+          - combobox "Number of guests" [ref=f37e123]:
+            - option "1 guest" [selected]
+            - option "2 guests"
+            - option "3 guests"
+            - option "4 guests"
+            - option "5 guests"
+            - option "6 guests"
+        - generic [ref=f37e124]:
+          - generic [ref=f37e125]: Full name
+          - textbox "Full name" [ref=f37e126]:
+            - /placeholder: Your name
+        - generic [ref=f37e127]:
+          - generic [ref=f37e128]: Phone number
+          - textbox "Phone number" [ref=f37e129]:
+            - /placeholder: So we can reach you
+        - group "Will you be joining us?" [ref=f37e130]:
+          - generic [ref=f37e132]:
+            - generic [ref=f37e133]:
+              - radio "Accepts with pleasure" [checked] [ref=f37e134]
+              - generic [ref=f37e135] [cursor=pointer]: Accepts with pleasure
+            - generic [ref=f37e137]:
+              - radio "Declines with regret" [ref=f37e138]
+              - generic [ref=f37e139] [cursor=pointer]: Declines with regret
+        - button "Send my reply" [ref=f37e141] [cursor=pointer]
+        - paragraph [ref=f37e142]: Your reply opens in WhatsApp, ready to send. Nothing is stored on this page.
+    - contentinfo [ref=f37e143]:
+      - generic [ref=f37e144]:
+        - img "Adaeze and Emeka" [ref=f37e145]:
+          - generic [ref=f37e146]:
+            - generic [ref=f37e147]: A
+            - generic [ref=f37e148]: E
+        - paragraph [ref=f37e149]: Thank you
+        - paragraph [ref=f37e150]: for agreeing to be part of this one.
+        - paragraph [ref=f37e156]: Adaeze & Emeka · 2027
+  - generic [ref=f37e160]:
+    - button "Open the invitation from Adaeze and Emeka" [ref=f37e162] [cursor=pointer]:
+      - generic [ref=f37e163]: Adaeze & Emeka
+      - img "Adaeze and Emeka" [ref=f37e174]:
+        - generic [ref=f37e175]:
+          - generic [ref=f37e176]: A
+          - generic [ref=f37e177]: E
+    - paragraph [ref=f37e178]: Tap to open

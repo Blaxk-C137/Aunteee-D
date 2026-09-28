@@ -65,7 +65,7 @@ export function Rsvp() {
 
   if (sent) {
     return (
-      <Section id="rsvp" tone="pearl" foil={foil}>
+      <Section id="rsvp" tone="beige-deep" foil={foil}>
         <div style={{ textAlign: "center", maxWidth: "32rem", margin: "0 auto" }}>
           <EngravedRule width="min(13rem,55%)" />
           <p
@@ -93,7 +93,7 @@ export function Rsvp() {
               <a
                 href={mailtoHref}
                 style={{
-                  color: "var(--gold)",
+                  color: "var(--lilac)",
                   textDecoration: "underline",
                   textUnderlineOffset: "3px",
                 }}
@@ -109,7 +109,7 @@ export function Rsvp() {
   }
 
   return (
-    <Section id="rsvp" tone="pearl" foil={foil}>
+    <Section id="rsvp" tone="beige-deep" foil={foil}>
       <div style={{ maxWidth: "27rem", margin: "0 auto" }}>
         <div style={{ textAlign: "center" }}>
           <p className="ww-label">Kindly RSVP</p>
