@@ -1,0 +1,102 @@
+/* ── the foil ────────────────────────────────────────────────────── */
+/*  Gold botanical line work laid on the ground. It is admitted on three
+    conditions: it never sits where text sits, it never moves on its own,
+    and it is drawn rather than placed.
+
+    Three tiers, by how much attention each is allowed:
+
+      --wm      a watermark. Large, barely there, drifting against the
+                scroll so the ground has some depth behind it.
+      --accent  visible line work, close enough to the words to be read.
+      --inline  the only tier that goes near the type, so it stays small
+                and lives at the edge of a rule, never behind a
+                paragraph.
+
+    A tier sets --foil-o and nothing else. How an ornament arrives is its
+    own business, drawn at random when it mounts — see REVEALS. */
+.ww-foil{
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+  pointer-events:none;color:var(--gold-deco);
+  --foil-o:.07;
+  --rv-dur:1.5s;--rv-delay:0s;--rv-step:.1s;
+  --rv-ease:cubic-bezier(.42,0,.2,1)
+}
+.ww-foil--wm{--foil-o:.07}
+.ww-foil--accent{--foil-o:.3}
+.ww-foil--inline{--foil-o:.5}
+/* Translucent gold over wine turns olive and stops reading as metal, so
+   the wine panels take the light gold instead. */
+.ww-panel--wine .ww-foil,.ww-panel--deep .ww-foil{color:var(--gold-lt)}
+.ww-panel--wine .ww-foil--wm,.ww-panel--deep .ww-foil--wm{--foil-o:.075}
+.ww-panel--wine .ww-foil--accent,.ww-panel--deep .ww-foil--accent{--foil-o:.3}
+
+/* The entrance sits on its own element so it can own opacity, transform
+   and clip-path without fighting the two transforms that already exist:
+   the ornament's fixed orientation on the span above it, and the drift on
+   the svg below.
+
+   Every transition here runs in both directions, which is the whole point
+   — scrolling back up rewinds the ornament rather than leaving it lit. */
+.ww-foil-rv{
+  display:block;width:100%;height:100%;
+  opacity:0;transform-origin:50% 100%;
+  transition:
+    opacity var(--rv-dur) var(--rv-ease) var(--rv-delay),
+    transform var(--rv-dur) var(--rv-ease) var(--rv-delay),
+    clip-path var(--rv-dur) var(--rv-ease) var(--rv-delay)
+}
+.ww-foil.is-in .ww-foil-rv{opacity:var(--foil-o);transform:none;clip-path:inset(0 0 0 0)}
+
+/* Where each ornament comes from. Picked per ornament, not per tier, so
+   nothing on the page arrives the way its neighbour did. */
+.ww-rv--rise{transform:translate3d(0,46px,0)}
+.ww-rv--settle{transform:translate3d(0,-42px,0)}
+.ww-rv--slide{transform:translate3d(-52px,0,0)}
+.ww-rv--slide-r{transform:translate3d(52px,0,0)}
+.ww-rv--bloom{transform:scale(.8);transform-origin:50% 50%}
+.ww-rv--unfurl{transform:scaleY(.08)}
+.ww-rv--sway{transform:rotate(-9deg)}
+/* A wipe is a wipe and not a fade, so these hold the tier's opacity
+   throughout and only their clip-path moves — the rewind is then a wipe
+   back rather than a dissolve. */
+.ww-rv--wipe,.ww-rv--wipe-r,.ww-rv--wipe-d,.ww-rv--wipe-u{opacity:var(--foil-o)}
+.ww-rv--wipe{clip-path:inset(0 100% 0 0)}
+.ww-rv--wipe-r{clip-path:inset(0 0 0 100%)}
+.ww-rv--wipe-d{clip-path:inset(0 0 100% 0)}
+.ww-rv--wipe-u{clip-path:inset(100% 0 0 0)}
+
+/* The drift. --p is written by the page's single scroll loop and runs
+   about -1 below the fold to 1 above it, so every ornament on the page
+   shares one measurement — which is what lets that loop do all of its
+   reading before it does any writing. */
+.ww-foil-art{
+  width:100%;height:100%;display:block;
+  transform:translate3d(0,calc(var(--p,0) * var(--drift,0px)),0)
+}
+
+/* Drawing, not appearing. Every drawable shape in the set carries
+   pathLength="1", which normalises its length to 1 whatever its real
+   geometry — so this one dash rule draws any of them and nothing has to
+   be measured with getTotalLength(). The stagger is nth-child and the
+   step is random per ornament, so two fronds never fill in at the same
+   rhythm. */
+.ww-line path,.ww-line circle,.ww-line ellipse,.ww-line line,
+.ww-line-r path,.ww-line-r circle,.ww-line-r ellipse,.ww-line-r line{
+  stroke-dasharray:1;stroke-dashoffset:1
+}
+/* the same stroke drawn from its far end */
+.ww-line-r path,.ww-line-r circle,.ww-line-r ellipse,.ww-line-r line{stroke-dashoffset:-1}
+
+.is-in .ww-line path,.is-in .ww-line circle,
+.is-in .ww-line ellipse,.is-in .ww-line line,
+.is-in .ww-line-r path,.is-in .ww-line-r circle,
+.is-in .ww-line-r ellipse,.is-in .ww-line-r line{
+  animation:ww-stroke var(--rv-dur) var(--rv-ease) var(--rv-delay) forwards
+}
+.is-in .ww-line *:nth-child(2),.is-in .ww-line-r *:nth-child(2){animation-delay:calc(var(--rv-delay) + var(--rv-step))}
+.is-in .ww-line *:nth-child(3),.is-in .ww-line-r *:nth-child(3){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 2)}
+.is-in .ww-line *:nth-child(4),.is-in .ww-line-r *:nth-child(4){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 3)}
+.is-in .ww-line *:nth-child(5),.is-in .ww-line-r *:nth-child(5){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 4)}
+.is-in .ww-line *:nth-child(6),.is-in .ww-line-r *:nth-child(6){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 5)}
+.is-in .ww-line *:nth-child(n+7),.is-in .ww-line-r *:nth-child(n+7){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 6)}
+@keyframes ww-stroke{to{stroke-dashoffset:0}}

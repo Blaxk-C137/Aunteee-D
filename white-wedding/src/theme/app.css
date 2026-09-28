@@ -1,0 +1,182 @@
+/* ── panels ──────────────────────────────────────────────────────── */
+.ww-panel{position:relative;padding:var(--panel-y) var(--panel-x);overflow:clip}
+.ww-panel--ivory{background:var(--ivory);color:var(--ink)}
+.ww-panel--pearl{background:var(--pearl);color:var(--ink)}
+.ww-panel--wine{background:var(--wine);color:var(--on-wine)}
+.ww-panel--deep{background:var(--wine-deep);color:var(--on-wine)}
+.ww-inner{position:relative;z-index:1;max-width:60rem;margin:0 auto}
+.ww-measure{max-width:var(--measure)}
+
+/* ── focus ───────────────────────────────────────────────────────── */
+.ww :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:1px}
+.ww-panel--wine :focus-visible,.ww-panel--deep :focus-visible{outline-color:var(--gold-lt)}
+
+/* ── the engraved rule — the page's only ornament ────────────────── */
+.ww-engraved{display:flex;align-items:center;gap:.75rem;color:var(--gold-deco)}
+.ww-engraved i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rule))}
+.ww-engraved i:last-child{background:linear-gradient(90deg,var(--rule),transparent)}
+.ww-engraved--onwine{color:var(--gold-lt)}
+.ww-engraved--onwine i{background:linear-gradient(90deg,transparent,rgba(223,193,121,.4))}
+.ww-engraved--onwine i:last-child{background:linear-gradient(90deg,rgba(223,193,121,.4),transparent)}
+
+/* ── the invitation plate's double rule ──────────────────────────── */
+/* On a phone the viewport *is* the plate, so the rule hugs the screen.
+   On a desktop a viewport-wide rule stretches into a page border that
+   the centred column never touches. There it becomes an actual plate:
+   a portrait card the content sits inside. */
+.ww-frame{position:absolute;inset:clamp(11px,3.2vw,24px);pointer-events:none}
+.ww-frame span{position:absolute;inset:0;border:1px solid var(--rule)}
+.ww-frame span:last-child{inset:5px;border-color:var(--rule-soft)}
+@media (min-width:46rem){
+  .ww-frame{
+    inset:clamp(1.35rem,4.4vh,2.75rem) auto;
+    left:50%;transform:translateX(-50%);
+    width:min(100% - 4rem,36rem)
+  }
+}
+
+/* ── buttons ─────────────────────────────────────────────────────── */
+/* Border is the affordance, so it is solid --gold-deco (3:1 on ivory)
+   rather than a pale tint. Hover fills with the text gold, which keeps
+   the label at 5.3:1 instead of the 3:1 a pale fill would give. */
+.ww-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  padding:1.05rem 2.4rem;border-radius:2px;
+  font-size:.75rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
+  cursor:pointer;background:transparent;border:1px solid var(--gold-deco);color:var(--ink);
+  transition:background-color .2s ease,color .2s ease,border-color .2s ease
+}
+.ww-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--ivory)}
+.ww-btn--solid{background:var(--gold);border-color:var(--gold);color:var(--ivory)}
+.ww-btn--solid:hover{background:var(--wine);border-color:var(--wine)}
+.ww-btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ── fields ──────────────────────────────────────────────────────── */
+.ww-field{
+  width:100%;padding:.9rem 1rem;
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--field-border);border-radius:2px;
+  font-family:'Jost',sans-serif;font-size:1rem;font-weight:300;color:var(--ink);
+  transition:border-color .2s ease,box-shadow .2s ease
+}
+.ww-field::placeholder{color:rgba(43,33,36,.42)}
+.ww-field:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(138,96,19,.18)}
+.ww-field[aria-invalid="true"]{border-color:#96324B;box-shadow:0 0 0 3px rgba(150,50,75,.14)}
+select.ww-field{
+  appearance:none;padding-right:2.5rem;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' fill='none' stroke='%238A6013' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 1rem center
+}
+.ww-fielabel{
+  display:block;margin-bottom:.5rem;
+  font-size:.6875rem;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-soft)
+}
+.ww-error{display:block;margin-top:.45rem;font-size:.8125rem;color:#96324B}
+
+/* accept / decline — real radios so arrow keys work */
+.ww-choice{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.ww-choice-label{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.95rem 1rem;border:1px solid var(--field-border);border-radius:2px;
+  background:rgba(255,255,255,.6);cursor:pointer;
+  font-size:.75rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-soft);
+  transition:border-color .2s ease,background-color .2s ease,color .2s ease
+}
+.ww-choice-label:hover{border-color:var(--gold-deco)}
+.ww-choice:checked+.ww-choice-label{border-color:var(--gold);background:rgba(138,96,19,.09);color:var(--ink)}
+.ww-choice:focus-visible+.ww-choice-label{outline:2px solid var(--gold);outline-offset:2px}
+.ww-tick{
+  flex:none;width:15px;height:15px;border:1px solid var(--field-border);border-radius:50%;
+  display:flex;align-items:center;justify-content:center
+}
+.ww-choice:checked+.ww-choice-label .ww-tick{border-color:var(--gold)}
+.ww-choice:checked+.ww-choice-label .ww-tick::after{
+  content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)
+}
+
+/* ── the big day cards ───────────────────────────────────────────── */
+.ww-cards{
+  display:grid;gap:clamp(20px,5vw,34px);
+  grid-template-columns:1fr;margin-top:clamp(30px,7vw,48px)
+}
+@media (min-width:46rem){
+  .ww-cards[data-count="2"],.ww-cards[data-count="3"]{grid-template-columns:repeat(2,1fr)}
+}
+.ww-card{
+  position:relative;border:1px solid var(--rule-soft);background:var(--ivory);
+  padding:clamp(30px,7vw,46px) clamp(22px,5vw,36px);text-align:center
+}
+.ww-card::before{
+  content:"";position:absolute;inset:6px;border:1px solid rgba(176,138,51,.13);pointer-events:none
+}
+.ww-card h3{
+  font-size:.6875rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.4rem
+}
+.ww-map{
+  display:inline-block;margin-top:1.3rem;padding-bottom:.2rem;
+  border-bottom:1px solid var(--rule);
+  font-size:.6875rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;transition:border-color .2s ease
+}
+.ww-map:hover{border-color:var(--gold)}
+
+/* ── countdown ───────────────────────────────────────────────────── */
+.ww-units{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(24px,6vw,40px) 0;
+  margin:clamp(32px,7vw,50px) auto 0;max-width:38rem
+}
+@media (min-width:30rem){.ww-units{grid-template-columns:repeat(4,1fr)}}
+.ww-unit{text-align:center;border-left:1px solid rgba(223,193,121,.18)}
+.ww-unit:first-child,.ww-unit:nth-child(3){border-left:0}
+@media (min-width:30rem){
+  .ww-unit:nth-child(3){border-left:1px solid rgba(223,193,121,.18)}
+  .ww-unit:first-child{border-left:0}
+}
+.ww-unit .ww-num{
+  font-size:clamp(38px,11vw,64px);color:var(--ivory);
+  font-variation-settings:'opsz' 96
+}
+.ww-unit span.ww-cap{
+  display:block;margin-top:.85rem;
+  font-size:.625rem;font-weight:500;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--gold-lt);opacity:.8
+}
+
+/* ── song ────────────────────────────────────────────────────────── */
+.ww-player{display:flex;align-items:center;gap:1.1rem;max-width:23rem;margin:2rem auto 0}
+.ww-play{
+  flex:none;width:56px;height:56px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--gold);color:var(--ivory);background:var(--gold);
+  transition:background-color .2s ease,transform .2s ease
+}
+.ww-play:hover{background:var(--wine);border-color:var(--wine);transform:scale(1.03)}
+.ww-play svg{display:block}
+.ww-track{flex:1;min-width:0}
+.ww-scrub{height:2px;background:rgba(43,33,36,.16);cursor:pointer;overflow:hidden}
+.ww-scrub span{display:block;height:100%;background:var(--gold);width:0}
+.ww-times{
+  display:flex;justify-content:space-between;margin-top:.5rem;
+  font-size:.6875rem;letter-spacing:.1em;color:var(--ink-soft);
+  font-variant-numeric:tabular-nums
+}
+
+/* ── hero entrance — the page's single orchestrated moment ───────── */
+@keyframes ww-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.ww-hero>*{animation:ww-rise .9s cubic-bezier(.22,1,.36,1) both}
+.ww-hero>*:nth-child(1){animation-delay:.05s}
+.ww-hero>*:nth-child(2){animation-delay:.14s}
+.ww-hero>*:nth-child(3){animation-delay:.23s}
+.ww-hero>*:nth-child(4){animation-delay:.32s}
+.ww-hero>*:nth-child(5){animation-delay:.41s}
+.ww-hero>*:nth-child(6){animation-delay:.5s}
+.ww-hero>*:nth-child(7){animation-delay:.58s}
+
+.ww-thread{
+  position:fixed;top:0;left:0;height:2px;z-index:60;
+  background:var(--gold);transition:width .12s linear;pointer-events:none
+}

@@ -1,0 +1,128 @@
+.ww,.ww *,.ww *::before,.ww *::after{box-sizing:border-box}
+/* :where() keeps this at the specificity of a bare class, so the spacing
+   rules further down still win. As .ww p this is (0,1,1) and silently
+   beats every class-scoped margin-top in the file. */
+.ww :where(h1,h2,h3,p,figure,blockquote,ul,ol,fieldset){
+  margin:0;padding:0;border:0;list-style:none
+}
+.ww button,.ww input,.ww select{font:inherit;color:inherit}
+.ww a{color:inherit}
+
+.ww{
+  /* Off-edge botanicals hang past the trim by design, so something has to
+     clip them. Each panel clips its own, with overflow:clip and not
+     overflow:hidden — hidden makes a box a scroll container, and a panel
+     that is its own scroll container swallows the scrollIntoView() the
+     hero's own button depends on.
+
+     This used to be done only here, and only in x. That trimmed the sides
+     but left the last panel's botanical hanging past the bottom of the
+     page, where nothing clipped it: the document grew by the length of the
+     overhang and ended on a band of bare ground with a few gold strokes
+     still drawn across it. */
+  overflow-x:clip;
+  /* ── ivory ground, wine depth, gold metal ────────────────────── */
+  --ivory:#FCF9F3;
+  --pearl:#F4ECDF;
+  --wine:#4A1526;
+  --wine-deep:#2E0C18;
+  --ink:#2B2124;
+  --ink-soft:rgba(43,33,36,.68);
+
+  /* Two golds, because one cannot do both jobs. --gold is the text
+     gold: 5.3:1 on ivory and 4.8:1 on pearl, so small caps labels stay
+     legible. --gold-deco is the ornamental gold for hairlines, frames
+     and the monogram, where being delicate is the point. */
+  --gold:#8A6013;
+  --gold-deco:#B08A33;
+  --gold-lt:#DFC179;
+
+  --rule:rgba(176,138,51,.42);
+  --rule-soft:rgba(176,138,51,.2);
+  --field-border:rgba(43,33,36,.5);
+  --on-wine:rgba(252,249,243,.88);
+  --on-wine-dim:rgba(252,249,243,.55);
+  --on-wine-faint:rgba(252,249,243,.5);
+
+  --measure:34rem;
+  --panel-y:clamp(62px,13vw,116px);
+  --panel-x:clamp(20px,6vw,44px);
+
+  font-family:'Jost',ui-sans-serif,system-ui,sans-serif;
+  font-size:16px;
+  font-weight:300;
+  line-height:1.7;
+  color:var(--ink);
+  background:var(--ivory);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ── three voices. Cormorant Garamond is the ceremonial serif and the
+      only one the names are set in; Parisienne appears exactly once, on
+      the word "and"; Jost carries everything that has to be read.
+      Bodoni Moda survives solely for the countdown's tabular figures,
+      where its figures beat Cormorant's. ──────────────────────────── */
+.ww-display{
+  font-family:'Cormorant Garamond',Didot,'Times New Roman',serif;
+  font-weight:400;line-height:1.06;letter-spacing:.004em
+}
+/* The hero names. Editorial scale at the family's regular weight — the
+   air belongs *around* the names, not inside them, so the tracking is
+   barely open and the leading is tight. */
+.ww-name{
+  font-family:'Cormorant Garamond',Didot,'Times New Roman',serif;
+  font-weight:400;
+  font-size:clamp(2.85rem,13.5vw,5.5rem);
+  line-height:1.04;letter-spacing:.02em
+}
+/* The one script word. Script faces carry a small x-height, so this
+   reads smaller than its size suggests and needs to sit *above* the
+   italic it replaces, not below it. */
+.ww-script{
+  font-family:'Parisienne','Allura',cursive;
+  font-weight:400;
+  font-size:clamp(1.75rem,6.5vw,2.5rem);
+  line-height:1.15;letter-spacing:0
+}
+/* "and", ruled in from both sides. The hairlines pick up where the
+   engraved rule leaves off, so the word sits inside the page's own
+   ornament instead of floating in the gap between the two names. */
+.ww-and{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(.75rem,3vw,1.15rem);margin:.42em 0 .5em
+}
+.ww-and i{
+  flex:0 0 auto;width:clamp(2rem,10vw,4.25rem);height:1px;
+  background:linear-gradient(90deg,transparent,var(--rule))
+}
+.ww-and i:last-child{background:linear-gradient(90deg,var(--rule),transparent)}
+.ww-text{font-weight:300;line-height:1.78}
+.ww-num{
+  font-family:'Bodoni Moda',Didot,serif;
+  font-variation-settings:'opsz' 96;
+  font-weight:400;line-height:1;display:block;
+  font-variant-numeric:tabular-nums
+}
+
+.ww-label{
+  font-size:.6875rem;font-weight:400;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--gold)
+}
+.ww-label--plain{color:var(--ink-soft)}
+.ww-label--onwine{color:var(--gold-lt)}
+
+/* Wide tracking is the point of the label, but on a narrow phone it
+   pushes the line into a ragged second row. Tighten it there instead
+   of letting the label wrap. */
+@media (max-width:30rem){
+  .ww-label,.ww-fielabel,.ww-eyebrow{font-size:.625rem;letter-spacing:.2em}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ww *,.ww *::before,.ww *::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important
+  }
+  .ww-hero>*{opacity:1!important;transform:none!important}
+}
