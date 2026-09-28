@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 
 // ═══════════════════════════════════════════════════════════════════
 //  WHITE WEDDING INVITATION
@@ -12,7 +12,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 //  letterpress invitation. That single motif divides every section.
 //  There are no illustrations and no icons.
 //
-//  The only animation is the hero's entrance.
+//  The animation is the hero's entrance and the gold botanicals, which
+//  draw themselves in as they enter and retire the way they came as they
+//  leave — see the foil engine below.
 // ═══════════════════════════════════════════════════════════════════
 
 // ─── EDIT THESE ─────────────────────────────────────────────────────
@@ -97,17 +99,32 @@ const mapHref = (e) =>
 
 // ── Fonts + stylesheet, injected once ───────────────────────────────
 const FONT_HREF =
-  "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap";
+  "https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Great+Vibes&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Parisienne&display=swap";
 
 const CSS = `
 .ww,.ww *,.ww *::before,.ww *::after{box-sizing:border-box}
-.ww h1,.ww h2,.ww h3,.ww p,.ww figure,.ww blockquote,.ww ul,.ww ol,.ww fieldset{
+/* :where() keeps this at the specificity of a bare class, so the spacing
+   rules further down still win. As .ww p this is (0,1,1) and silently
+   beats every class-scoped margin-top in the file. */
+.ww :where(h1,h2,h3,p,figure,blockquote,ul,ol,fieldset){
   margin:0;padding:0;border:0;list-style:none
 }
 .ww button,.ww input,.ww select{font:inherit;color:inherit}
 .ww a{color:inherit}
 
 .ww{
+  /* Off-edge botanicals hang past the trim by design, so something has to
+     clip them. Each panel clips its own, with overflow:clip and not
+     overflow:hidden — hidden makes a box a scroll container, and a panel
+     that is its own scroll container swallows the scrollIntoView() the
+     hero's own button depends on.
+
+     This used to be done only here, and only in x. That trimmed the sides
+     but left the last panel's botanical hanging past the bottom of the
+     page, where nothing clipped it: the document grew by the length of the
+     overhang and ended on a band of bare ground with a few gold strokes
+     still drawn across it. */
+  overflow-x:clip;
   /* ── ivory ground, wine depth, gold metal ────────────────────── */
   --ivory:#FCF9F3;
   --pearl:#F4ECDF;
@@ -145,12 +162,45 @@ const CSS = `
   text-rendering:optimizeLegibility;
 }
 
-/* ── two voices: Bodoni Moda speaks, Jost explains ──────────────── */
+/* ── three voices. Cormorant Garamond is the ceremonial serif and the
+      only one the names are set in; Parisienne appears exactly once, on
+      the word "and"; Jost carries everything that has to be read.
+      Bodoni Moda survives solely for the countdown's tabular figures,
+      where its figures beat Cormorant's. ──────────────────────────── */
 .ww-display{
-  font-family:'Bodoni Moda',Didot,'Times New Roman',serif;
-  font-variation-settings:'opsz' 96;
-  font-weight:400;line-height:1.02;letter-spacing:-.008em
+  font-family:'Cormorant Garamond',Didot,'Times New Roman',serif;
+  font-weight:400;line-height:1.06;letter-spacing:.004em
 }
+/* The hero names. Editorial scale at the family's regular weight — the
+   air belongs *around* the names, not inside them, so the tracking is
+   barely open and the leading is tight. */
+.ww-name{
+  font-family:'Cormorant Garamond',Didot,'Times New Roman',serif;
+  font-weight:400;
+  font-size:clamp(2.85rem,13.5vw,5.5rem);
+  line-height:1.04;letter-spacing:.02em
+}
+/* The one script word. Script faces carry a small x-height, so this
+   reads smaller than its size suggests and needs to sit *above* the
+   italic it replaces, not below it. */
+.ww-script{
+  font-family:'Parisienne','Allura',cursive;
+  font-weight:400;
+  font-size:clamp(1.75rem,6.5vw,2.5rem);
+  line-height:1.15;letter-spacing:0
+}
+/* "and", ruled in from both sides. The hairlines pick up where the
+   engraved rule leaves off, so the word sits inside the page's own
+   ornament instead of floating in the gap between the two names. */
+.ww-and{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(.75rem,3vw,1.15rem);margin:.42em 0 .5em
+}
+.ww-and i{
+  flex:0 0 auto;width:clamp(2rem,10vw,4.25rem);height:1px;
+  background:linear-gradient(90deg,transparent,var(--rule))
+}
+.ww-and i:last-child{background:linear-gradient(90deg,var(--rule),transparent)}
 .ww-text{font-weight:300;line-height:1.78}
 .ww-num{
   font-family:'Bodoni Moda',Didot,serif;
@@ -160,20 +210,130 @@ const CSS = `
 }
 
 .ww-label{
-  font-size:.6875rem;font-weight:500;letter-spacing:.3em;
+  font-size:.6875rem;font-weight:400;letter-spacing:.32em;
   text-transform:uppercase;color:var(--gold)
 }
 .ww-label--plain{color:var(--ink-soft)}
 .ww-label--onwine{color:var(--gold-lt)}
 
+/* Wide tracking is the point of the label, but on a narrow phone it
+   pushes the line into a ragged second row. Tighten it there instead
+   of letting the label wrap. */
+@media (max-width:30rem){
+  .ww-label,.ww-fielabel,.ww-eyebrow{font-size:.625rem;letter-spacing:.2em}
+}
+
 /* ── panels ──────────────────────────────────────────────────────── */
-.ww-panel{position:relative;padding:var(--panel-y) var(--panel-x)}
+.ww-panel{position:relative;padding:var(--panel-y) var(--panel-x);overflow:clip}
 .ww-panel--ivory{background:var(--ivory);color:var(--ink)}
 .ww-panel--pearl{background:var(--pearl);color:var(--ink)}
 .ww-panel--wine{background:var(--wine);color:var(--on-wine)}
 .ww-panel--deep{background:var(--wine-deep);color:var(--on-wine)}
-.ww-inner{position:relative;max-width:60rem;margin:0 auto}
+.ww-inner{position:relative;z-index:1;max-width:60rem;margin:0 auto}
 .ww-measure{max-width:var(--measure)}
+
+/* ── the foil ────────────────────────────────────────────────────── */
+/*  Gold botanical line work laid on the ground. It is admitted on three
+    conditions: it never sits where text sits, it never moves on its own,
+    and it is drawn rather than placed.
+
+    Three tiers, by how much attention each is allowed:
+
+      --wm      a watermark. Large, barely there, drifting against the
+                scroll so the ground has some depth behind it.
+      --accent  visible line work, close enough to the words to be read.
+      --inline  the only tier that goes near the type, so it stays small
+                and lives at the edge of a rule, never behind a
+                paragraph.
+
+    A tier sets --foil-o and nothing else. How an ornament arrives is its
+    own business, drawn at random when it mounts — see REVEALS. */
+.ww-foil{
+  position:absolute;inset:0;z-index:0;overflow:hidden;
+  pointer-events:none;color:var(--gold-deco);
+  --foil-o:.07;
+  --rv-dur:1.5s;--rv-delay:0s;--rv-step:.1s;
+  --rv-ease:cubic-bezier(.42,0,.2,1)
+}
+.ww-foil--wm{--foil-o:.07}
+.ww-foil--accent{--foil-o:.3}
+.ww-foil--inline{--foil-o:.5}
+/* Translucent gold over wine turns olive and stops reading as metal, so
+   the wine panels take the light gold instead. */
+.ww-panel--wine .ww-foil,.ww-panel--deep .ww-foil{color:var(--gold-lt)}
+.ww-panel--wine .ww-foil--wm,.ww-panel--deep .ww-foil--wm{--foil-o:.075}
+.ww-panel--wine .ww-foil--accent,.ww-panel--deep .ww-foil--accent{--foil-o:.3}
+
+/* The entrance sits on its own element so it can own opacity, transform
+   and clip-path without fighting the two transforms that already exist:
+   the ornament's fixed orientation on the span above it, and the drift on
+   the svg below.
+
+   Every transition here runs in both directions, which is the whole point
+   — scrolling back up rewinds the ornament rather than leaving it lit. */
+.ww-foil-rv{
+  display:block;width:100%;height:100%;
+  opacity:0;transform-origin:50% 100%;
+  transition:
+    opacity var(--rv-dur) var(--rv-ease) var(--rv-delay),
+    transform var(--rv-dur) var(--rv-ease) var(--rv-delay),
+    clip-path var(--rv-dur) var(--rv-ease) var(--rv-delay)
+}
+.ww-foil.is-in .ww-foil-rv{opacity:var(--foil-o);transform:none;clip-path:inset(0 0 0 0)}
+
+/* Where each ornament comes from. Picked per ornament, not per tier, so
+   nothing on the page arrives the way its neighbour did. */
+.ww-rv--rise{transform:translate3d(0,46px,0)}
+.ww-rv--settle{transform:translate3d(0,-42px,0)}
+.ww-rv--slide{transform:translate3d(-52px,0,0)}
+.ww-rv--slide-r{transform:translate3d(52px,0,0)}
+.ww-rv--bloom{transform:scale(.8);transform-origin:50% 50%}
+.ww-rv--unfurl{transform:scaleY(.08)}
+.ww-rv--sway{transform:rotate(-9deg)}
+/* A wipe is a wipe and not a fade, so these hold the tier's opacity
+   throughout and only their clip-path moves — the rewind is then a wipe
+   back rather than a dissolve. */
+.ww-rv--wipe,.ww-rv--wipe-r,.ww-rv--wipe-d,.ww-rv--wipe-u{opacity:var(--foil-o)}
+.ww-rv--wipe{clip-path:inset(0 100% 0 0)}
+.ww-rv--wipe-r{clip-path:inset(0 0 0 100%)}
+.ww-rv--wipe-d{clip-path:inset(0 0 100% 0)}
+.ww-rv--wipe-u{clip-path:inset(100% 0 0 0)}
+
+/* The drift. --p is written by the page's single scroll loop and runs
+   about -1 below the fold to 1 above it, so every ornament on the page
+   shares one measurement — which is what lets that loop do all of its
+   reading before it does any writing. */
+.ww-foil-art{
+  width:100%;height:100%;display:block;
+  transform:translate3d(0,calc(var(--p,0) * var(--drift,0px)),0)
+}
+
+/* Drawing, not appearing. Every drawable shape in the set carries
+   pathLength="1", which normalises its length to 1 whatever its real
+   geometry — so this one dash rule draws any of them and nothing has to
+   be measured with getTotalLength(). The stagger is nth-child and the
+   step is random per ornament, so two fronds never fill in at the same
+   rhythm. */
+.ww-line path,.ww-line circle,.ww-line ellipse,.ww-line line,
+.ww-line-r path,.ww-line-r circle,.ww-line-r ellipse,.ww-line-r line{
+  stroke-dasharray:1;stroke-dashoffset:1
+}
+/* the same stroke drawn from its far end */
+.ww-line-r path,.ww-line-r circle,.ww-line-r ellipse,.ww-line-r line{stroke-dashoffset:-1}
+
+.is-in .ww-line path,.is-in .ww-line circle,
+.is-in .ww-line ellipse,.is-in .ww-line line,
+.is-in .ww-line-r path,.is-in .ww-line-r circle,
+.is-in .ww-line-r ellipse,.is-in .ww-line-r line{
+  animation:ww-stroke var(--rv-dur) var(--rv-ease) var(--rv-delay) forwards
+}
+.is-in .ww-line *:nth-child(2),.is-in .ww-line-r *:nth-child(2){animation-delay:calc(var(--rv-delay) + var(--rv-step))}
+.is-in .ww-line *:nth-child(3),.is-in .ww-line-r *:nth-child(3){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 2)}
+.is-in .ww-line *:nth-child(4),.is-in .ww-line-r *:nth-child(4){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 3)}
+.is-in .ww-line *:nth-child(5),.is-in .ww-line-r *:nth-child(5){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 4)}
+.is-in .ww-line *:nth-child(6),.is-in .ww-line-r *:nth-child(6){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 5)}
+.is-in .ww-line *:nth-child(n+7),.is-in .ww-line-r *:nth-child(n+7){animation-delay:calc(var(--rv-delay) + var(--rv-step) * 6)}
+@keyframes ww-stroke{to{stroke-dashoffset:0}}
 
 /* ── focus ───────────────────────────────────────────────────────── */
 .ww :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:1px}
@@ -371,6 +531,371 @@ if (typeof document !== "undefined" && !document.getElementById("ww-font")) {
   document.head.appendChild(style);
 }
 
+// ═══════════════════════════════════════════════════════════════════
+//  The foil engine
+//
+//  Nine or ten botanicals per page, each revealing as it enters and
+//  retiring as it leaves, is more animation than it sounds, and the
+//  naive way to do the drift is a listener per ornament. At that many
+//  that is that many getBoundingClientRect() calls interleaved with as
+//  many style writes — read, write, read, write — and each write
+//  invalidates the layout the next read was about to do. So instead they
+//  all register here, and the loop below measures everything before it
+//  touches anything.
+// ═══════════════════════════════════════════════════════════════════
+const REDUCED =
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const drifters = new Set();
+let driftFrame = null;
+
+const flushDrift = () => {
+  driftFrame = null;
+  const vh = window.innerHeight || 1;
+  const jobs = [];
+
+  // read — every measurement, before a single style is touched
+  for (const el of drifters) {
+    const r = el.getBoundingClientRect();
+    jobs.push([el, (r.top + r.height / 2 - vh / 2) / vh]);
+  }
+  // write
+  for (const [el, p] of jobs) el.style.setProperty("--p", p.toFixed(4));
+};
+
+const scheduleDrift = () => {
+  if (driftFrame === null) driftFrame = requestAnimationFrame(flushDrift);
+};
+
+const registerDrift = (el) => {
+  drifters.add(el);
+  if (drifters.size === 1) {
+    window.addEventListener("scroll", scheduleDrift, { passive: true });
+    window.addEventListener("resize", scheduleDrift);
+  }
+  scheduleDrift();
+  return () => {
+    drifters.delete(el);
+    if (drifters.size === 0) {
+      window.removeEventListener("scroll", scheduleDrift);
+      window.removeEventListener("resize", scheduleDrift);
+      if (driftFrame !== null) {
+        cancelAnimationFrame(driftFrame);
+        driftFrame = null;
+      }
+    }
+  };
+};
+
+/* One ornament's worth of behaviour: a ref to hang on the element, and
+   whether it is currently in view.
+
+   The reveal is reversible on purpose. An ornament that only ever reveals
+   leaves the upper half of the page inert once the guest scrolls back
+   into it, and a page you can only walk forwards through reads as spent.
+   So the observer stays connected and each ornament retires the way it
+   arrived, which is what makes scrolling up and down again feel like a
+   loop rather than a one-way trip.
+
+   The two thresholds are what stop that from strobing on a trackpad: it
+   takes a sixth of the ornament to arrive, and almost nothing to leave,
+   so an ornament hovering at the fold cannot flip back and forth. */
+function useFoil(drift) {
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (REDUCED) {
+      setShown(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const r = entry.intersectionRatio;
+        setShown((was) => (was ? r > 0.02 : r > 0.16));
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: [0, 0.02, 0.16, 0.4] }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !drift || REDUCED) return;
+    el.style.setProperty("--drift", `${drift}px`);
+    return registerDrift(el);
+  }, [drift]);
+
+  return [ref, shown];
+}
+
+/* Every ornament draws its entrance from this list at random, once, when
+   it mounts. One reveal applied everywhere stops reading as an event and
+   starts reading as a mechanism. Repeats here are deliberate weights, not
+   accidents: the draw is the page's signature and stays the likeliest,
+   and no ornament takes the same one as the ornament beside it. */
+const REVEALS = [
+  "line", "line", "line", "line-r",
+  "rise", "rise", "settle", "slide", "slide-r",
+  "bloom", "unfurl", "sway",
+  "wipe", "wipe-r", "wipe-d", "wipe-u",
+];
+
+/* Four easings, so even two ornaments that drew the same reveal do not
+   move identically. */
+const EASES = [
+  "cubic-bezier(.42,0,.2,1)",
+  "cubic-bezier(.22,1,.36,1)",
+  "cubic-bezier(.16,1,.3,1)",
+  "cubic-bezier(.5,0,.15,1)",
+];
+
+const pickReveal = () => ({
+  k: REVEALS[Math.floor(Math.random() * REVEALS.length)],
+  dur: (1.15 + Math.random() * 1.05).toFixed(2),
+  delay: (Math.random() * 0.3).toFixed(2),
+  step: (0.05 + Math.random() * 0.13).toFixed(3),
+  ease: EASES[Math.floor(Math.random() * EASES.length)],
+});
+
+/* Placement. `tier` picks the opacity (see the stylesheet); `x`/`y` are
+   percentages of the panel, so an ornament keeps its station as the panel
+   grows. Negative values put it off the edge, which is where a botanical
+   usually belongs — a sprig that stops politely short of the trim reads
+   as a sticker.
+
+   `inline` drops it back into the flow instead, for the few that flank a
+   word rather than sit behind one.
+
+   Three elements, because three things want to transform independently
+   and only one of them can own `transform` at a time: the outer span
+   holds the position and the ornament's fixed orientation, the middle
+   holds the entrance, and the svg holds the drift. */
+function Foil({
+  art: Art,
+  tier = "wm",
+  size = 260,
+  x = "-6%",
+  y = "8%",
+  rotate = 0,
+  flip = false,
+  drift = 46,
+  inline = false,
+  style,
+}) {
+  const [ref, shown] = useFoil(drift);
+  const [rv] = useState(pickReveal);
+
+  const draws = rv.k === "line" || rv.k === "line-r";
+  const svgCls = `ww-foil-art${draws ? ` ww-${rv.k}` : ""}`;
+
+  return (
+    <span
+      ref={ref}
+      className={`ww-foil ww-foil--${tier}${shown ? " is-in" : ""}`}
+      style={{
+        ...(inline ? { position: "relative", inset: "auto" } : { left: x, top: y }),
+        width: size,
+        height: size,
+        transform: `rotate(${rotate}deg) scaleX(${flip ? -1 : 1})`,
+        "--rv-dur": `${rv.dur}s`,
+        "--rv-delay": `${rv.delay}s`,
+        "--rv-step": `${rv.step}s`,
+        "--rv-ease": rv.ease,
+        ...style,
+      }}
+    >
+      <span className={`ww-foil-rv ww-rv--${rv.k}`}>
+        <Art className={svgCls} />
+      </span>
+    </span>
+  );
+}
+
+// ── The botanical vocabulary ────────────────────────────────────────
+//  Ten motifs, all stroke art in currentColor, so one set wears the
+//  ornamental gold on the ivory panels and the light gold on the wine
+//  ones. Nothing here is filled: at seven per cent opacity a fill turns
+//  to mud where a line still reads as a line.
+//
+//  The page's own card is the source — white blossom, gold leaf outline,
+//  the wreath ring behind the wording — not a general idea of "floral".
+const PETAL = "M50 50C43 39 44 26 50 17c6 9 7 22 0 33Z";
+
+/* One leaf, drawn from its stem at the origin up and to the right. Placed
+   by transform wherever a leaf is wanted — the frond hangs a dozen off a
+   rib, the wreath sets thirty round a ring — so every leaf on the page is
+   the same leaf. */
+const LEAF = "M0 0C7 -2 13 -8 15 -17C7 -13 2 -6 0 0Z";
+
+/* One bloom, from which every flower on the page is built: the spray,
+   the single bloom and the bud cluster all use it, so the ornament reads
+   as one hand rather than as ten separate drawings. */
+const Bloom = ({ cx = 50, cy = 50, s = 1, petals = 5 }) => (
+  <g transform={`translate(${cx} ${cy}) scale(${s}) translate(-50 -50)`}>
+    {Array.from({ length: petals }, (_, i) => (
+      <path
+        key={i}
+        pathLength="1"
+        d={PETAL}
+        transform={`rotate(${(360 / petals) * i} 50 50)`}
+      />
+    ))}
+    <circle pathLength="1" cx="50" cy="50" r="4.5" />
+    <circle pathLength="1" cx="50" cy="50" r="1.5" />
+  </g>
+);
+
+const svgProps = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: ".85",
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  "aria-hidden": "true",
+  focusable: "false",
+};
+
+const BlossomSpray = (p) => (
+  <svg viewBox="0 0 100 100" {...svgProps} {...p}>
+    <path pathLength="1" d="M3 98C17 82 29 63 39 43 48 25 59 13 73 7" />
+    <path pathLength="1" d="M37 57C28 52 19 52 10 57c8 7 19 9 27 0Z" />
+    <path pathLength="1" d="M49 37c9-7 19-9 29-7-5 9-18 13-29 7Z" />
+    <path pathLength="1" d="M61 19c-3-8-1-14 5-18 5 7 3 14-5 18Z" />
+    <Bloom cx={79} cy={8} s={.44} />
+  </svg>
+);
+
+const LeafFrond = (p) => (
+  <svg viewBox="0 0 100 100" {...svgProps} {...p}>
+    <path pathLength="1" d="M50 100C50 76 48 48 43 24 40 12 35 4 28 0" />
+    {[0, 1, 2, 3, 4, 5, 6].map((i) => {
+      const y = 90 - i * 13;
+      const x = 50 - i * 1.1;
+      const s = 1.5 - i * 0.15;
+      return (
+        <g key={i}>
+          <path
+            pathLength="1"
+            d={LEAF}
+            transform={`translate(${x.toFixed(1)} ${y}) rotate(${-98 + i * 2}) scale(${s.toFixed(2)})`}
+          />
+          <path
+            pathLength="1"
+            d={LEAF}
+            transform={`translate(${x.toFixed(1)} ${y}) rotate(${-6 - i * 2}) scale(${s.toFixed(2)})`}
+          />
+        </g>
+      );
+    })}
+  </svg>
+);
+
+/* An arc carrying leaves on its outer edge — cut to run beside a rule or
+   around the crook of a corner, which is where the card uses one. */
+const LaurelArc = (p) => (
+  <svg viewBox="0 0 140 70" {...svgProps} {...p}>
+    <path pathLength="1" d="M2 68C26 68 52 58 74 40 94 24 116 14 138 12" />
+    {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
+      const t = i / 7;
+      const x = 2 + t * 136;
+      const y = 68 - Math.pow(t, 1.5) * 56;
+      return (
+        <g key={i}>
+          <path pathLength="1" d={`M${x} ${y}c-3-9-9-14-17-15 1 9 7 15 17 15Z`} />
+          <path pathLength="1" d={`M${x} ${y}c3-8 10-12 18-12-2 8-9 13-18 12Z`} />
+        </g>
+      );
+    })}
+  </svg>
+);
+
+const SingleBloom = (p) => (
+  <svg viewBox="0 0 100 100" {...svgProps} {...p}>
+    <Bloom cx={50} cy={44} s={1.5} />
+    <path pathLength="1" d="M50 96C50 78 48 66 42 56" />
+    <path pathLength="1" d="M46 72C38 69 30 70 22 76c9 5 18 3 24-4Z" />
+    <path pathLength="1" d="M48 84c8-4 17-3 24 3-8 5-18 3-24-3Z" />
+    <path pathLength="1" d="M50 20V2M41 24l-8-15M59 24l8-15" />
+  </svg>
+);
+
+const BudCluster = (p) => (
+  <svg viewBox="0 0 100 100" {...svgProps} {...p}>
+    <path pathLength="1" d="M14 98C26 82 36 66 44 48 51 33 58 20 66 10" />
+    <path pathLength="1" d="M42 56c-7-4-15-4-22 1 7 6 16 6 22-1Z" />
+    <path pathLength="1" d="M52 36c7-5 15-6 22-2-6 7-16 8-22 2Z" />
+    <Bloom cx={70} cy={8} s={.34} petals={5} />
+    <Bloom cx={38} cy={30} s={.26} petals={5} />
+    <path pathLength="1" d="M30 46c-4-4-9-6-15-5 3 6 9 8 15 5Z" />
+  </svg>
+);
+
+const FernCurl = (p) => {
+  const turns = 2.3;
+  const N = 96;
+  const pts = [];
+  for (let i = 0; i <= N; i += 1) {
+    const t = i / N;
+    const a = t * turns * Math.PI * 2 - 0.6;
+    const r = 36 * Math.pow(0.6, t * 3.3);
+    pts.push(`${i ? "L" : "M"}${(54 + r * Math.cos(a)).toFixed(1)} ${(56 + r * Math.sin(a)).toFixed(1)}`);
+  }
+  return (
+    <svg viewBox="0 0 100 100" {...svgProps} {...p}>
+      <path pathLength="1" d={pts.join("")} />
+      <path pathLength="1" d="M54 92C44 92 34 88 26 80" />
+      <path pathLength="1" d="M34 84c-3-6-8-10-15-11 2 7 8 12 15 11Z" />
+      <path pathLength="1" d="M48 90c4-6 11-9 18-9-3 7-10 11-18 9Z" />
+    </svg>
+  );
+};
+
+const SeedPod = (p) => (
+  <svg viewBox="0 0 100 100" {...svgProps} {...p}>
+    <path pathLength="1" d="M50 98C36 78 30 56 32 34 33 20 38 8 46 0" />
+    <path pathLength="1" d="M50 96C62 76 68 54 66 32 65 19 60 8 53 1" />
+    {[0, 1, 2, 3, 4, 5].map((i) => (
+      <circle key={i} pathLength="1" cx={i % 2 ? 44 : 55} cy={14 + i * 14} r="3.4" />
+    ))}
+  </svg>
+);
+
+/* The ring the card sets behind its wording — a watermark, and the only
+   motif here meant to close on itself. The leaves lean along the ring
+   rather than standing out from it, which is the difference between a
+   laurel wreath and a sun. */
+const WreathRing = (p) => {
+  const N = 30;
+  return (
+    <svg viewBox="0 0 100 100" {...svgProps} {...p}>
+      <circle pathLength="1" cx="50" cy="50" r="39" />
+      <circle pathLength="1" cx="50" cy="50" r="31" opacity=".42" />
+      {Array.from({ length: N }, (_, i) => {
+        const a = (i / N) * Math.PI * 2;
+        const cx = 50 + 35 * Math.cos(a);
+        const cy = 50 + 35 * Math.sin(a);
+        const deg = (a * 180) / Math.PI;
+        return (
+          <path
+            key={i}
+            pathLength="1"
+            d={LEAF}
+            transform={`translate(${cx.toFixed(2)} ${cy.toFixed(2)}) rotate(${(
+              deg + 47 + (i % 2 ? 58 : 34)
+            ).toFixed(1)}) scale(.3)`}
+          />
+        );
+      })}
+    </svg>
+  );
+};
+
 // ── Hooks ───────────────────────────────────────────────────────────
 function useCountdown(target) {
   const calc = useCallback(() => {
@@ -445,66 +970,152 @@ const EngravedRule = ({ width = "min(19rem,74%)", tone = "ivory", style }) => (
 );
 
 // ═══════════════════════════════════════════════════════════════════
-//  Monogram — the couple's initials in a double-ruled ring with four
-//  engraved diamonds set between the rules.
+//  Monogram — the couple's two initials interlocked.
+//
+//  CONFIG.initials arrives as "A & E": initials *and* their separator,
+//  so the letters are pulled out of it rather than drawn whole.
+//
+//  The interlock is the engraver's trick. The second letter is stroked
+//  in the panel's own colour before its fill is laid down, which opens
+//  a hairline gap through the first wherever the two cross. The pair
+//  then reads as one woven mark instead of two letters set side by
+//  side. A ring or a badge around it would only turn it back into a
+//  logo, which is the one thing a stationer's monogram is not.
+//
+//  Great Vibes is doing the ornament. Its capitals carry the curled
+//  terminals and the long descending swash that a drawn monogram has,
+//  which no amount of tracking a text serif will fake.
 // ═══════════════════════════════════════════════════════════════════
-function Monogram({ size = 104, initials, onWine }) {
-  const text = (initials || "").trim();
-  const fontSize = text.length > 5 ? 15 : text.length > 3 ? 19 : 24;
-  const R1 = 46;
-  const R2 = 42;
-  const mark = (R1 + R2) / 2;
-  const stroke = onWine ? "rgba(223,193,121,.5)" : "rgba(176,138,51,.45)";
-  const strokeSoft = onWine ? "rgba(223,193,121,.26)" : "rgba(176,138,51,.22)";
+const MONO_FACE = "'Great Vibes', 'Pinyon Script', cursive";
+const MONO_SIZE = 58;
+const MONO_SHARE = 0.24; // how much of the narrower letter the two share
+const MONO_PAD = 4;
+
+const initialPair = (s) => ((s || "").match(/[A-Za-z]/g) || []).slice(0, 2);
+
+/* Where the two letters actually land.
+ *
+ * Great Vibes overhangs its advance width badly, and by a different
+ * amount per letter — at 58 units a capital M inks 85 wide where an E
+ * inks 51. A guessed offset therefore merges some pairs into one blob
+ * and leaves others barely touching. So the overlap is taken from the
+ * letters' real ink boxes, which means measuring, which in turn means
+ * waiting for the face to land: measured before it does, the numbers
+ * describe the fallback font and are worthless.
+ *
+ * The two <text> nodes are drawn on top of each other at the origin
+ * until the measurement arrives; the caller keeps them transparent
+ * until then, so a wrong-frame monogram is never painted.
+ */
+function useMonogramFit(letters) {
+  const holder = useRef(null);
+  const [fit, setFit] = useState(null);
+  const key = letters.join("");
+
+  useLayoutEffect(() => {
+    let live = true;
+
+    const measure = () => {
+      const g = holder.current;
+      if (!g || !live) return;
+      const boxes = Array.from(g.querySelectorAll("text")).map((t) => t.getBBox());
+      const [a, b] = boxes;
+      if (!a || !b || !a.width || !b.width) return;
+
+      const ov = MONO_SHARE * Math.min(a.width, b.width);
+      const top = Math.min(a.y, b.y);
+      const bottom = Math.max(a.y + a.height, b.y + b.height);
+
+      setFit({
+        vx: -MONO_PAD,
+        vy: top - MONO_PAD,
+        vw: a.width + b.width - ov + 2 * MONO_PAD,
+        vh: bottom - top + 2 * MONO_PAD,
+        first: `translate(${-a.x} 0)`,
+        second: `translate(${a.width - ov - b.x} 0)`,
+      });
+    };
+
+    measure();
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load(`${MONO_SIZE}px 'Great Vibes'`).then(measure).catch(measure);
+    }
+    return () => {
+      live = false;
+    };
+  }, [key]);
+
+  return [holder, fit];
+}
+
+/* The mark itself: two capitals on a shared baseline, the second
+   stroked in the panel's own colour before its fill is laid down. That
+   stroke is what opens a hairline gap through the first letter where
+   the two cross, so the pair reads as one woven mark rather than two
+   letters set side by side — the engraver's trick. */
+const MonoLetters = ({ holder, fit, letters, fill, bg }) => (
+  <g ref={holder}>
+    {letters.map((ch, i) => (
+      <text
+        key={i}
+        x="0"
+        y="0"
+        fontFamily={MONO_FACE}
+        fontSize={MONO_SIZE}
+        fill={fill}
+        transform={fit ? (i ? fit.second : fit.first) : undefined}
+        {...(i
+          ? {
+              stroke: bg,
+              strokeWidth: "5",
+              strokeLinejoin: "round",
+              paintOrder: "stroke",
+            }
+          : {})}
+      >
+        {ch}
+      </text>
+    ))}
+  </g>
+);
+
+function Monogram({ size = "clamp(104px,30vw,136px)", initials, onWine, bg }) {
+  const letters = initialPair(initials);
+  const [holder, fit] = useMonogramFit(letters);
+  const width = typeof size === "number" ? `${size}px` : size;
 
   return (
     <svg
-      viewBox="0 0 100 100"
-      width={size}
-      height={size}
+      viewBox={fit ? `${fit.vx} ${fit.vy} ${fit.vw} ${fit.vh}` : "0 0 100 80"}
       role="img"
-      aria-label={`${CONFIG.bride} and ${CONFIG.groom}`}
-      style={{ display: "block", margin: "0 auto" }}
+      aria-label={letters.length === 2 ? `${CONFIG.bride} and ${CONFIG.groom}` : CONFIG.bride}
+      style={{
+        display: "block",
+        margin: "0 auto",
+        width,
+        height: "auto",
+        aspectRatio: fit ? `${fit.vw} / ${fit.vh}` : "100 / 80",
+        opacity: fit ? 1 : 0,
+        transition: "opacity .5s ease",
+        overflow: "visible",
+      }}
     >
-      <circle cx="50" cy="50" r={R1} fill="none" stroke={stroke} strokeWidth="1" />
-      <circle cx="50" cy="50" r={R2} fill="none" stroke={strokeSoft} strokeWidth="1" />
-      {[0, 90, 180, 270].map((deg) => {
-        const a = ((deg - 90) * Math.PI) / 180;
-        return (
-          <rect
-            key={deg}
-            x="46.4"
-            y="46.4"
-            width="7.2"
-            height="7.2"
-            fill="none"
-            stroke={stroke}
-            strokeWidth=".9"
-            transform={`translate(${(50 + mark * Math.cos(a)).toFixed(2)} ${(
-              50 +
-              mark * Math.sin(a)
-            ).toFixed(2)}) rotate(45) translate(-50 -50)`}
-          />
-        );
-      })}
-      <text
-        x="50"
-        y="51"
-        textAnchor="middle"
-        dominantBaseline="central"
-        fontFamily="Bodoni Moda, Didot, serif"
-        fontSize={fontSize}
-        fontStyle="italic"
+      <MonoLetters
+        holder={holder}
+        fit={fit}
+        letters={letters}
         fill={onWine ? "#DFC179" : "#8A6013"}
-      >
-        {text}
-      </text>
+        bg={bg || (onWine ? "#2E0C18" : "#FBF7F0")}
+      />
     </svg>
   );
 }
 
-const Section = ({ id, tone = "ivory", children }) => (
+/* `foil` is the ornament layer, rendered inside the panel but outside
+   .ww-inner, so it lands below every word. */
+const Section = ({ id, tone = "ivory", foil, children }) => (
   <section id={id} className={`ww-panel ww-panel--${tone}`}>
+    {foil}
     <div className="ww-inner">{children}</div>
   </section>
 );
@@ -532,41 +1143,38 @@ function Hero() {
         <span />
       </div>
 
-      <div className="ww-hero ww-inner" style={{ width: "100%" }}>
-        <Monogram size={104} initials={CONFIG.initials} />
+      <Foil art={WreathRing} tier="wm" size={780} x="50%" y="50%" drift={26}
+            style={{ marginLeft: -390, marginTop: -390 }} />
+      <Foil art={BlossomSpray} tier="accent" size={380} x="-8%" y="3%" rotate={-6} drift={64} />
+      <Foil art={LeafFrond} tier="wm" size={330} x="76%" y="58%" rotate={10} flip drift={-56} />
+      <Foil art={SingleBloom} tier="wm" size={210} x="2%" y="70%" rotate={10} drift={38} />
 
-        <p className="ww-label" style={{ marginTop: "clamp(26px,6vw,38px)" }}>
+      <div className="ww-hero ww-inner" style={{ width: "100%" }}>
+        <Monogram initials={CONFIG.initials} />
+
+        <p className="ww-label" style={{ marginTop: "clamp(30px,7vw,46px)" }}>
           Together with their families
         </p>
 
         <h1
-          className="ww-display"
+          className="ww-name"
           style={{
-            marginTop: "1.4rem",
-            fontSize: "clamp(3rem,14vw,6rem)",
+            marginTop: "1.6rem",
             color: "var(--ink)",
           }}
         >
           {CONFIG.bride}
         </h1>
 
-        <p
-          className="ww-display"
-          aria-hidden="true"
-          style={{
-            margin: ".22em 0 .28em",
-            fontSize: "clamp(1.5rem,5.5vw,2.125rem)",
-            fontStyle: "italic",
-            color: "var(--gold)",
-          }}
-        >
-          and
-        </p>
+        <div className="ww-and" aria-hidden="true">
+          <i />
+          <span className="ww-script" style={{ color: "var(--gold)" }}>
+            and
+          </span>
+          <i />
+        </div>
 
-        <h1
-          className="ww-display"
-          style={{ fontSize: "clamp(3rem,14vw,6rem)", color: "var(--ink)" }}
-        >
+        <h1 className="ww-name" style={{ color: "var(--ink)" }}>
           {CONFIG.groom}
         </h1>
 
@@ -602,7 +1210,16 @@ function Hero() {
 
 function Story() {
   return (
-    <Section id="story" tone="pearl">
+    <Section
+      id="story"
+      tone="pearl"
+      foil={
+        <>
+          <Foil art={BudCluster} tier="accent" size={260} x="-7%" y="6%" rotate={-10} drift={44} />
+          <Foil art={FernCurl} tier="wm" size={320} x="74%" y="44%" rotate={-14} flip drift={-38} />
+        </>
+      }
+    >
       <div style={{ textAlign: "center" }}>
         <p className="ww-label">Our story</p>
         <EngravedRule width="min(13rem,55%)" style={{ margin: "1.5rem auto 2rem" }} />
@@ -631,7 +1248,17 @@ function BigDay() {
     events.length > 1 && events.every((e) => dayKey(e.date) === dayKey(events[0].date));
 
   return (
-    <Section id="details" tone="ivory">
+    <Section
+      id="details"
+      tone="ivory"
+      foil={
+        <>
+          <Foil art={LaurelArc} tier="accent" size={300} x="-6%" y="62%" rotate={-4} drift={-40} />
+          <Foil art={LeafFrond} tier="wm" size={330} x="78%" y="-4%" rotate={12} flip drift={52} />
+          <Foil art={SingleBloom} tier="wm" size={210} x="3%" y="6%" rotate={-8} drift={30} />
+        </>
+      }
+    >
       <div style={{ textAlign: "center" }}>
         <p className="ww-label">The day</p>
         <EngravedRule width="min(13rem,55%)" style={{ margin: "1.5rem auto 0" }} />
@@ -725,9 +1352,20 @@ function Countdown() {
   const t = useCountdown(CONFIG.weddingDate);
   const by = asDate(CONFIG.rsvpBy);
 
+  // Shared between both branches so the ring does not jump the moment the
+  // countdown runs out and the section swaps to its "today" copy.
+  const foil = (
+    <>
+      <Foil art={WreathRing} tier="wm" size={640} x="50%" y="50%" drift={22}
+            style={{ marginLeft: -320, marginTop: -320 }} />
+      <Foil art={FernCurl} tier="wm" size={260} x="80%" y="64%" rotate={-20} flip drift={-34} />
+      <Foil art={BlossomSpray} tier="wm" size={250} x="-5%" y="6%" rotate={8} drift={36} />
+    </>
+  );
+
   if (!t) {
     return (
-      <Section id="countdown" tone="deep">
+      <Section id="countdown" tone="deep" foil={foil}>
         <div style={{ textAlign: "center", maxWidth: "32rem", margin: "0 auto" }}>
           <p className="ww-label ww-label--onwine">Today</p>
           <EngravedRule tone="wine" width="min(13rem,55%)" style={{ margin: "1.5rem auto" }} />
@@ -750,7 +1388,7 @@ function Countdown() {
   ];
 
   return (
-    <Section id="countdown" tone="wine">
+    <Section id="countdown" tone="wine" foil={foil}>
       <div style={{ textAlign: "center" }}>
         <p className="ww-label ww-label--onwine">Until we say I do</p>
         <EngravedRule tone="wine" width="min(13rem,55%)" style={{ margin: "1.5rem auto 0" }} />
@@ -830,7 +1468,17 @@ function Song() {
   };
 
   return (
-    <Section id="song" tone="ivory">
+    <Section
+      id="song"
+      tone="ivory"
+      foil={
+        <>
+          <Foil art={BlossomSpray} tier="accent" size={250} x="76%" y="4%" rotate={-12} flip drift={44} />
+          <Foil art={LeafFrond} tier="wm" size={300} x="-6%" y="52%" rotate={6} drift={-42} />
+          <Foil art={BudCluster} tier="wm" size={230} x="4%" y="-6%" rotate={14} drift={32} />
+        </>
+      }
+    >
       <div style={{ textAlign: "center" }}>
         <p className="ww-label">Our song</p>
         <EngravedRule width="min(13rem,55%)" style={{ margin: "1.5rem auto 2rem" }} />
@@ -951,9 +1599,18 @@ function Rsvp() {
     `RSVP — ${CONFIG.bride} & ${CONFIG.groom}`
   )}&body=${encodeURIComponent(buildMessage())}`;
 
+  // Shared between both branches so the ornament does not restart when
+  // the form is replaced by its thank-you.
+  const foil = (
+    <>
+      <Foil art={LaurelArc} tier="accent" size={280} x="-7%" y="8%" rotate={-6} drift={38} />
+      <Foil art={FernCurl} tier="wm" size={300} x="76%" y="58%" rotate={14} flip drift={-36} />
+    </>
+  );
+
   if (sent) {
     return (
-      <Section id="rsvp" tone="pearl">
+      <Section id="rsvp" tone="pearl" foil={foil}>
         <div style={{ textAlign: "center", maxWidth: "32rem", margin: "0 auto" }}>
           <EngravedRule width="min(13rem,55%)" />
           <p
@@ -997,7 +1654,7 @@ function Rsvp() {
   }
 
   return (
-    <Section id="rsvp" tone="pearl">
+    <Section id="rsvp" tone="pearl" foil={foil}>
       <div style={{ maxWidth: "27rem", margin: "0 auto" }}>
         <div style={{ textAlign: "center" }}>
           <p className="ww-label">Kindly RSVP</p>
@@ -1124,8 +1781,13 @@ function Footer() {
   const year = asDate(CONFIG.weddingDate).getFullYear();
   return (
     <footer className="ww-panel ww-panel--deep" style={{ textAlign: "center" }}>
+      <Foil art={WreathRing} tier="wm" size={640} x="50%" y="50%" drift={22}
+            style={{ marginLeft: -320, marginTop: -320 }} />
+      <Foil art={BlossomSpray} tier="wm" size={250} x="4%" y="8%" rotate={-10} drift={34} />
+      <Foil art={LeafFrond} tier="wm" size={280} x="80%" y="52%" rotate={8} flip drift={-40} />
+
       <div className="ww-inner">
-        <Monogram size={96} initials={CONFIG.initials} onWine />
+        <Monogram size={124} initials={CONFIG.initials} onWine />
 
         <p
           className="ww-display"
