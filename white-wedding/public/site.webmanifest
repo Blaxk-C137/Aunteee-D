@@ -1,0 +1,13 @@
+{
+  "name": "Jemimah & Watashira — 12 December 2026",
+  "short_name": "J & W",
+  "description": "The wedding of Jemimah and Watashira, 12 December 2026, Kano.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F1E6",
+  "theme_color": "#3D2352",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -1,17 +1,15 @@
 export const CONFIG = {
-  // Given names, which is what the hero sets in display type and what
-  // the monogram is drawn from. The surnames are Danboyi and Watashira
-  // — see the note on `initials` below.
+  // Display names, exactly as they should read on the page. The
+  // invitation was supplied as "Danboyi Jemimah" and
+  // "Watashira Titus"; the groom is shown as Watashira.
   bride: "Jemimah",
-  groom: "Titus",
+  groom: "Watashira",
 
   // Monogram. Keep it to initials only — 2 to 5 characters.
   //
-  // Read from the given names, to match the hero: J & T. The invitation
-  // was supplied as "Danboyi Jemimah" and "Watashira Titus", i.e.
-  // surname first, so D & W would be the other reading. One line to
-  // change if the monogram should carry the family names instead.
-  initials: "J & T",
+  // J & W, read from the two names as displayed above. One line to
+  // change if the monogram should carry something else.
+  initials: "J & W",
 
   // The ceremony. Drives the hero date and the countdown.
   weddingDate: "2026-12-12T11:00:00",
@@ -37,8 +35,14 @@ export const CONFIG = {
 
   dressCode: "Black tie optional",
 
+  // Blank lines separate paragraphs. `Story.jsx` splits on them and
+  // renders one <p> per block, so a break here is real markup rather
+  // than something that has to be faked with <br>s.
   story:
-    "Ten years ago we were two people arguing about a borrowed umbrella. Somewhere between then and now it became a life — a shared kitchen, a hundred inside jokes, and a habit of choosing each other on the ordinary days. We would like you there on the day it becomes official.",
+    "We met online in 2014, in the BlackBerry era, when a single BBM ping could brighten an entire day.\n\n" +
+    "Months of laughter and easy love followed. Then he went abroad, and we parted.\n\n" +
+    "In 2018 he came home to ask for another chance. I knew the sweet boy underneath the bravado, so I gave him one.\n\n" +
+    "And here we are.",
 
   // ── Our song ──────────────────────────────────────────────────────
   // Title and artist only. The audio itself is not a URL — drop

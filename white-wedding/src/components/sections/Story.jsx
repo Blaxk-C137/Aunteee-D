@@ -36,16 +36,22 @@ export function Story() {
           </figure>
         ) : null}
 
-        <p
-          className="ww-text ww-measure"
-          style={{
-            margin: "0 auto",
-            fontSize: "clamp(1.0625rem,4.3vw,1.25rem)",
-            color: "var(--ink)",
-          }}
-        >
-          {CONFIG.story}
-        </p>
+        {/* One <p> per blank-line-separated block in `CONFIG.story`. The
+            first carries no top margin so the block stays flush with the
+            rule above it however many paragraphs are added. */}
+        {CONFIG.story.split(/\n\s*\n/).map((paragraph, i) => (
+          <p
+            key={i}
+            className="ww-text ww-measure"
+            style={{
+              margin: i === 0 ? "0 auto" : "1.1em auto 0",
+              fontSize: "clamp(1.0625rem,4.3vw,1.25rem)",
+              color: "var(--ink)",
+            }}
+          >
+            {paragraph}
+          </p>
+        ))}
       </div>
     </Section>
   );

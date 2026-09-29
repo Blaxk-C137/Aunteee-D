@@ -4,13 +4,113 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="theme-color" content="#3D2352" />
-    <title>Jemimah &amp; Titus — 12 December 2026</title>
+    <title>Jemimah &amp; Watashira — 12 December 2026</title>
 
-    <!-- `public/` is copied verbatim to the build root, so this resolves
-         at /favicon.svg in dev and in the build alike. Swap the file, not
-         this line. -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <!-- ── SEO ──────────────────────────────────────────────────────────
+         Absolute URLs below are built from VITE_SITE_URL, which is set in
+         `.env`. Change it there and every one of them follows — none of
+         them should be edited here. -->
+    <meta
+      name="description"
+      content="Jemimah &amp; Watashira are getting married on 12 December 2026 in Kano, Nigeria. Ceremony, reception and RSVP details."
+    />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- ── Link preview ────────────────────────────────────────────────
+         Read by WhatsApp, iMessage, Facebook, X and LinkedIn when the
+         link is pasted into a chat. `og:image` must be an absolute URL
+         or every one of them silently falls back to a bare link. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Jemimah &amp; Watashira" />
+    <meta property="og:title" content="Jemimah &amp; Watashira — 12 December 2026" />
+    <meta
+      property="og:description"
+      content="Jemimah &amp; Watashira are getting married on 12 December 2026 in Kano, Nigeria. Ceremony, reception and RSVP details."
+    />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/og.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jemimah and Watashira" />
+    <meta property="og:locale" content="en_NG" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jemimah &amp; Watashira — 12 December 2026" />
+    <meta
+      name="twitter:description"
+      content="Jemimah &amp; Watashira are getting married on 12 December 2026 in Kano, Nigeria. Ceremony, reception and RSVP details."
+    />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og.jpg" />
+    <meta name="twitter:image:alt" content="Jemimah and Watashira" />
+
+    <!-- ── Icons ───────────────────────────────────────────────────────
+         `public/` is copied verbatim to the build root, so these resolve
+         at /favicon-32.png in dev and in the build alike. All four are
+         generated from one square master image; to rebuild them after
+         swapping the artwork, run this from `white-wedding/`:
+
+           magick MASTER.png -resize 32x32   -strip public/favicon-32.png
+           magick MASTER.png -resize 192x192 -strip public/favicon-192.png
+           magick MASTER.png -resize 180x180 -strip public/apple-touch-icon.png
+           magick MASTER.png -define icon:auto-resize=48,32,16 public/favicon.ico
+
+         `favicon.ico` comes first because older browsers request
+         /favicon.ico by name and never look at the tags after it. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- ── Structured data ─────────────────────────────────────────────
+         `startDate` carries an explicit +01:00 because Kano is WAT —
+         UTC+1 all year, no daylight saving. Without the offset a crawler
+         in another zone reads the time as its own and the listing shows
+         the wrong hour.
+
+         The venue names repeat `src/config/site.js`, which is where the
+         page itself reads them from. Two places to keep in step; there
+         is no way to build this block from the config because it has to
+         be in the HTML for crawlers that do not run JavaScript. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Jemimah & Watashira — Wedding",
+        "description": "The wedding of Jemimah and Watashira, 12 December 2026, Kano, Nigeria.",
+        "url": "%VITE_SITE_URL%/",
+        "image": ["%VITE_SITE_URL%/og.jpg"],
+        "startDate": "2026-12-12T11:00:00+01:00",
+        "endDate": "2026-12-12T22:00:00+01:00",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "St. Mary's Catholic Church",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Kano",
+            "addressCountry": "NG"
+          }
+        },
+        "subEvent": {
+          "@type": "Event",
+          "name": "The Reception",
+          "startDate": "2026-12-12T16:30:00+01:00",
+          "location": {
+            "@type": "Place",
+            "name": "Royal Gardens Hall",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Kano",
+              "addressCountry": "NG"
+            }
+          }
+        }
+      }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
