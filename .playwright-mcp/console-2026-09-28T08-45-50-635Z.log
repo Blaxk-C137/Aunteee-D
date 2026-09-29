@@ -2,3 +2,10 @@
 [  325970ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804
 [  331574ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804
 [  337467ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804
+[  754559ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5199/@vite/client:1030
+[80502697ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804
+[80603639ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804
+[80880112ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804
+[81150506ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5199/@vite/client:1030
+[81151562ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804
+[81174087ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=1f13ff06:15804

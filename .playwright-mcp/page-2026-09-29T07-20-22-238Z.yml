@@ -1,0 +1,116 @@
+- generic [ref=f78e2]:
+  - generic [ref=f78e3]:
+    - generic [ref=f78e6]:
+      - img "Jemimah and Watashira" [ref=f78e7]:
+        - generic [ref=f78e8]:
+          - generic [ref=f78e9]: J
+          - generic [ref=f78e10]: W
+      - paragraph [ref=f78e11]: Together with their families
+      - heading "Jemimah" [level=1] [ref=f78e12]
+      - generic [ref=f78e15]: and
+      - heading "Watashira" [level=1] [ref=f78e17]
+      - paragraph [ref=f78e23]: SATURDAY, 12 DECEMBER 2026
+      - paragraph [ref=f78e24]: Kano, Nigeria
+      - link "Open the invitation" [ref=f78e26] [cursor=pointer]:
+        - /url: "#story"
+    - generic [ref=f78e29]:
+      - paragraph [ref=f78e30]: Our story
+      - figure [ref=f78e36]:
+        - img "Jemimah and Watashira" [ref=f78e37]
+      - paragraph [ref=f78e38]: We met online in 2014, in the BlackBerry era, when a single BBM ping could brighten an entire day.
+      - paragraph [ref=f78e39]: Months of laughter and easy love followed. Then he went abroad, and we parted.
+      - paragraph [ref=f78e40]: In 2018 he came home to ask for another chance. I knew the sweet boy underneath the bravado, so I gave him one.
+      - paragraph [ref=f78e41]: And here we are.
+    - generic [ref=f78e43]:
+      - generic [ref=f78e44]:
+        - paragraph [ref=f78e45]: The day
+        - paragraph [ref=f78e51]: Saturday 12 December
+      - generic [ref=f78e52]:
+        - article [ref=f78e53]:
+          - heading "The Ceremony" [level=3] [ref=f78e54]
+          - paragraph [ref=f78e55]: 11:00
+          - paragraph [ref=f78e61]: St. Mary's Catholic ChurchKano, Nigeria
+          - link "Open in maps" [ref=f78e62] [cursor=pointer]:
+            - /url: https://maps.google.com/?q=St.%20Mary's%20Catholic%20Church%2C%20Kano%2C%20Nigeria
+        - article [ref=f78e63]:
+          - heading "The Reception" [level=3] [ref=f78e64]
+          - paragraph [ref=f78e65]: 16:30
+          - paragraph [ref=f78e71]: Royal Gardens HallKano, Nigeria
+          - link "Open in maps" [ref=f78e72] [cursor=pointer]:
+            - /url: https://maps.google.com/?q=Royal%20Gardens%20Hall%2C%20Kano%2C%20Nigeria
+      - paragraph [ref=f78e73]: Black tie optional
+    - generic [ref=f78e76]:
+      - paragraph [ref=f78e77]: Until we say I do
+      - generic [ref=f78e83]:
+        - generic [ref=f78e84]:
+          - paragraph [ref=f78e85]:
+            - generic [aria-hidden] [ref=f78e86]: "74"
+            - generic [ref=f78e87]: 74 Days
+          - generic [ref=f78e88]: Days
+        - generic [ref=f78e89]:
+          - paragraph [ref=f78e90]:
+            - generic [aria-hidden] [ref=f78e91]: "02"
+            - generic [ref=f78e92]: 2 Hours
+          - generic [ref=f78e93]: Hours
+        - generic [ref=f78e94]:
+          - paragraph [ref=f78e95]:
+            - generic [aria-hidden] [ref=f78e96]: "39"
+            - generic [ref=f78e97]: 39 Minutes
+          - generic [ref=f78e98]: Minutes
+        - generic [ref=f78e99]:
+          - paragraph [ref=f78e100]:
+            - generic [aria-hidden] [ref=f78e101]: "38"
+            - generic [ref=f78e102]: 38 Seconds
+          - generic [ref=f78e103]: Seconds
+      - paragraph [ref=f78e104]: Kindly reply by Saturday 28 November
+    - generic [ref=f78e107]:
+      - paragraph [ref=f78e108]: Our song
+      - paragraph [ref=f78e114]: Now and Always
+      - paragraph [ref=f78e115]: Kotrell
+    - generic [ref=f78e118]:
+      - paragraph [ref=f78e120]: Kindly RSVP
+      - generic [ref=f78e126]:
+        - generic [ref=f78e127]:
+          - generic [ref=f78e128]: Number of guests
+          - combobox "Number of guests" [ref=f78e129]:
+            - option "1 guest" [selected]
+            - option "2 guests"
+            - option "3 guests"
+            - option "4 guests"
+            - option "5 guests"
+            - option "6 guests"
+        - generic [ref=f78e130]:
+          - generic [ref=f78e131]: Full name
+          - textbox "Full name" [ref=f78e132]:
+            - /placeholder: Your name
+        - generic [ref=f78e133]:
+          - generic [ref=f78e134]: Phone number
+          - textbox "Phone number" [ref=f78e135]:
+            - /placeholder: So we can reach you
+        - group "Will you be joining us?" [ref=f78e136]:
+          - generic [ref=f78e138]:
+            - generic [ref=f78e139]:
+              - radio "Accepts with pleasure" [checked] [ref=f78e140]
+              - generic [ref=f78e141] [cursor=pointer]: Accepts with pleasure
+            - generic [ref=f78e143]:
+              - radio "Declines with regret" [ref=f78e144]
+              - generic [ref=f78e145] [cursor=pointer]: Declines with regret
+        - button "Send my reply" [ref=f78e147] [cursor=pointer]
+        - paragraph [ref=f78e148]: Your reply opens in WhatsApp, ready to send. Nothing is stored on this page.
+    - contentinfo [ref=f78e149]:
+      - generic [ref=f78e150]:
+        - img "Jemimah and Watashira" [ref=f78e151]:
+          - generic [ref=f78e152]:
+            - generic [ref=f78e153]: J
+            - generic [ref=f78e154]: W
+        - paragraph [ref=f78e155]: Thank you
+        - paragraph [ref=f78e156]: for agreeing to be part of this one.
+        - paragraph [ref=f78e162]: Jemimah & Watashira · 2026
+  - generic [ref=f78e166]:
+    - button "Open the invitation from Jemimah and Watashira" [ref=f78e168] [cursor=pointer]:
+      - generic [ref=f78e169]: Jemimah & Watashira
+      - img "Jemimah and Watashira" [ref=f78e180]:
+        - generic [ref=f78e181]:
+          - generic [ref=f78e182]: J
+          - generic [ref=f78e183]: W
+    - paragraph [ref=f78e184]: Tap to open
